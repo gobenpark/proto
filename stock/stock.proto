@@ -1,0 +1,9 @@
+syntax = "proto3";
+package stock;
+
+import "github.com/envoyproxy/protoc-gen-validate/validate/validate.proto";
+
+
+service StockService {
+
+}
