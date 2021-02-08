@@ -1,13 +1,58 @@
 syntax = "proto3";
 package stock;
 
-import "github.com/envoyproxy/protoc-gen-validate/validate/validate.proto";
+//import "envoyproxy/protoc-gen-validate/validate/validate.proto";
+import "google/protobuf/empty.proto";
 
-
-service StockService {
-  rpc Account(AccountRequest) returns (Account) {}
+service Stock {
+  rpc Account(AccountRequest) returns (AccountReply) {}
+  rpc Tick(TickRequest) returns (stream TickReply) {}
+  rpc Chart(ChartRequest) returns (ChartReply) {}
+  rpc Accounts(google.protobuf.Empty) returns (AccountsReply) {}
+  rpc Buy(BuyRequest) returns (BuyReply){}
+  rpc Sell(SellRequest) returns (SellReply){}
 }
 
-message Account {
+message AccountRequest {
+
+}
+
+message AccountReply {
+
+}
+
+message TickRequest {
+
+}
+
+message TickReply{
+
+}
+
+
+message ChartRequest {
+
+}
+
+message ChartReply {
+
+}
+
+message AccountsReply{}
+
+
+message BuyRequest {
+
+}
+
+message BuyReply {
+
+}
+
+message SellRequest{
+
+}
+
+message SellReply {
 
 }
