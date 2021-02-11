@@ -8,11 +8,9 @@ setuptools.setup(
     author_email="qjadn0914@naver.com",
     description="for stock use grpc proto",
     long_description=open('README.md').read(),
-    url="github url 등",
+    url="https://github.com/gobenpark",
     packages=setuptools.find_packages(),
     classifiers=[
-        "stock",
-        "grpc",
-        "private"
+        "License :: OSI Approved :: BSD License"
     ],
 )
