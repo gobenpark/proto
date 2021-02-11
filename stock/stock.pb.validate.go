@@ -235,6 +235,20 @@ func (m *TickReply) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Price
+
+	if v, ok := interface{}(m.GetDate()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TickReplyValidationError{
+				field:  "Date",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for Volume
+
 	return nil
 }
 
@@ -362,6 +376,21 @@ var _ interface {
 func (m *ChartReply) Validate() error {
 	if m == nil {
 		return nil
+	}
+
+	for idx, item := range m.GetData() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ChartReplyValidationError{
+					field:  fmt.Sprintf("Data[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	}
 
 	return nil
@@ -742,3 +771,87 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = SellReplyValidationError{}
+
+// Validate checks the field values on ChartData with the rules defined in the
+// proto definition for this message. If any rules are violated, an error is returned.
+func (m *ChartData) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Open
+
+	// no validation rules for High
+
+	// no validation rules for Low
+
+	// no validation rules for Close
+
+	// no validation rules for Volume
+
+	if v, ok := interface{}(m.GetDate()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ChartDataValidationError{
+				field:  "Date",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	return nil
+}
+
+// ChartDataValidationError is the validation error returned by
+// ChartData.Validate if the designated constraints aren't met.
+type ChartDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ChartDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ChartDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ChartDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ChartDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ChartDataValidationError) ErrorName() string { return "ChartDataValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ChartDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sChartData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ChartDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ChartDataValidationError{}

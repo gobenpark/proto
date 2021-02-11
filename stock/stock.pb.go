@@ -5,6 +5,7 @@ package stock
 
 import (
 	context "context"
+	encoding_binary "encoding/binary"
 	fmt "fmt"
 	proto "github.com/gogo/protobuf/proto"
 	types "github.com/gogo/protobuf/types"
@@ -145,9 +146,12 @@ func (m *TickRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_TickRequest proto.InternalMessageInfo
 
 type TickReply struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Price                float64          `protobuf:"fixed64,1,opt,name=price,proto3" json:"price,omitempty"`
+	Date                 *types.Timestamp `protobuf:"bytes,2,opt,name=date,proto3" json:"date,omitempty"`
+	Volume               float64          `protobuf:"fixed64,3,opt,name=volume,proto3" json:"volume,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
 }
 
 func (m *TickReply) Reset()         { *m = TickReply{} }
@@ -182,6 +186,27 @@ func (m *TickReply) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_TickReply proto.InternalMessageInfo
+
+func (m *TickReply) GetPrice() float64 {
+	if m != nil {
+		return m.Price
+	}
+	return 0
+}
+
+func (m *TickReply) GetDate() *types.Timestamp {
+	if m != nil {
+		return m.Date
+	}
+	return nil
+}
+
+func (m *TickReply) GetVolume() float64 {
+	if m != nil {
+		return m.Volume
+	}
+	return 0
+}
 
 type ChartRequest struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -223,9 +248,10 @@ func (m *ChartRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_ChartRequest proto.InternalMessageInfo
 
 type ChartReply struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Data                 []*ChartData `protobuf:"bytes,1,rep,name=data,proto3" json:"data,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
 }
 
 func (m *ChartReply) Reset()         { *m = ChartReply{} }
@@ -260,6 +286,13 @@ func (m *ChartReply) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_ChartReply proto.InternalMessageInfo
+
+func (m *ChartReply) GetData() []*ChartData {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
 
 type AccountsReply struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -456,6 +489,93 @@ func (m *SellReply) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SellReply proto.InternalMessageInfo
 
+type ChartData struct {
+	Open                 float64          `protobuf:"fixed64,1,opt,name=open,proto3" json:"open,omitempty"`
+	High                 float64          `protobuf:"fixed64,2,opt,name=high,proto3" json:"high,omitempty"`
+	Low                  float64          `protobuf:"fixed64,3,opt,name=low,proto3" json:"low,omitempty"`
+	Close                float64          `protobuf:"fixed64,4,opt,name=close,proto3" json:"close,omitempty"`
+	Volume               float64          `protobuf:"fixed64,5,opt,name=volume,proto3" json:"volume,omitempty"`
+	Date                 *types.Timestamp `protobuf:"bytes,6,opt,name=date,proto3" json:"date,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *ChartData) Reset()         { *m = ChartData{} }
+func (m *ChartData) String() string { return proto.CompactTextString(m) }
+func (*ChartData) ProtoMessage()    {}
+func (*ChartData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c87a7814fbd674bd, []int{11}
+}
+func (m *ChartData) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ChartData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ChartData.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ChartData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ChartData.Merge(m, src)
+}
+func (m *ChartData) XXX_Size() int {
+	return m.Size()
+}
+func (m *ChartData) XXX_DiscardUnknown() {
+	xxx_messageInfo_ChartData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ChartData proto.InternalMessageInfo
+
+func (m *ChartData) GetOpen() float64 {
+	if m != nil {
+		return m.Open
+	}
+	return 0
+}
+
+func (m *ChartData) GetHigh() float64 {
+	if m != nil {
+		return m.High
+	}
+	return 0
+}
+
+func (m *ChartData) GetLow() float64 {
+	if m != nil {
+		return m.Low
+	}
+	return 0
+}
+
+func (m *ChartData) GetClose() float64 {
+	if m != nil {
+		return m.Close
+	}
+	return 0
+}
+
+func (m *ChartData) GetVolume() float64 {
+	if m != nil {
+		return m.Volume
+	}
+	return 0
+}
+
+func (m *ChartData) GetDate() *types.Timestamp {
+	if m != nil {
+		return m.Date
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*AccountRequest)(nil), "stock.AccountRequest")
 	proto.RegisterType((*AccountReply)(nil), "stock.AccountReply")
@@ -468,31 +588,41 @@ func init() {
 	proto.RegisterType((*BuyReply)(nil), "stock.BuyReply")
 	proto.RegisterType((*SellRequest)(nil), "stock.SellRequest")
 	proto.RegisterType((*SellReply)(nil), "stock.SellReply")
+	proto.RegisterType((*ChartData)(nil), "stock.ChartData")
 }
 
 func init() { proto.RegisterFile("stock.proto", fileDescriptor_c87a7814fbd674bd) }
 
 var fileDescriptor_c87a7814fbd674bd = []byte{
-	// 294 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x5c, 0x50, 0x3b, 0x4e, 0xc3, 0x40,
-	0x14, 0x8c, 0x21, 0x81, 0x30, 0x76, 0x9c, 0xf0, 0xf8, 0x14, 0x8b, 0xe4, 0xc2, 0x2d, 0xd2, 0x26,
-	0x40, 0x81, 0x44, 0x87, 0x11, 0x17, 0x20, 0x5c, 0x80, 0x58, 0x26, 0xa0, 0x18, 0xd6, 0xc4, 0x76,
-	0xe1, 0xcb, 0x51, 0x53, 0x72, 0x04, 0xe4, 0x93, 0xa0, 0xdd, 0xf5, 0x2e, 0x6b, 0xca, 0x99, 0xf7,
-	0xde, 0xbc, 0x99, 0x81, 0x5f, 0x56, 0x22, 0xdd, 0xf0, 0x62, 0x2b, 0x2a, 0x41, 0x23, 0x05, 0xd8,
-	0xd9, 0x5a, 0x88, 0x75, 0x9e, 0xcd, 0x15, 0xb9, 0xaa, 0x9f, 0xe7, 0xd9, 0x5b, 0x51, 0x35, 0x7a,
-	0x27, 0x9e, 0x21, 0xbc, 0x4d, 0x53, 0x51, 0xbf, 0x57, 0x0f, 0xd9, 0x47, 0x9d, 0x95, 0x55, 0x1c,
-	0x22, 0xb0, 0x4c, 0x91, 0x37, 0xf1, 0x04, 0xfe, 0xe3, 0x6b, 0xba, 0x31, 0x63, 0x1f, 0x07, 0x1a,
-	0xca, 0x59, 0x88, 0xe0, 0xee, 0xe5, 0x69, 0x6b, 0x6f, 0x03, 0xa0, 0xc3, 0x72, 0x3a, 0xc5, 0xa4,
-	0x53, 0x2a, 0x35, 0x11, 0x00, 0x49, 0xdd, 0x98, 0x65, 0x60, 0xac, 0x50, 0xf7, 0x64, 0x99, 0xe5,
-	0xb9, 0xf3, 0x44, 0xc3, 0x22, 0x6f, 0x2e, 0x3f, 0x77, 0x30, 0x5a, 0xca, 0x24, 0x74, 0x8d, 0xfd,
-	0x4e, 0x90, 0x4e, 0xb8, 0x4e, 0xda, 0x37, 0xcf, 0x8e, 0xfe, 0xd3, 0x52, 0x7c, 0x40, 0x0b, 0x0c,
-	0xa5, 0x69, 0xa2, 0x6e, 0xec, 0x04, 0x62, 0xb3, 0x1e, 0xa7, 0xf6, 0x17, 0x1e, 0x5d, 0x60, 0xa4,
-	0x92, 0x90, 0x51, 0x74, 0x73, 0xb2, 0xc3, 0x3e, 0xa9, 0x9f, 0xdc, 0x60, 0x6c, 0xe2, 0xd2, 0x29,
-	0xd7, 0xa5, 0x73, 0x53, 0x3a, 0xbf, 0x97, 0xa5, 0xb3, 0xe3, 0xbe, 0xbf, 0xd2, 0xdc, 0x9e, 0x63,
-	0x37, 0xa9, 0x1b, 0x32, 0xba, 0x7f, 0x2d, 0xb1, 0xa9, 0x4b, 0xe9, 0x65, 0x8e, 0xa1, 0x6c, 0xc7,
-	0xa6, 0x71, 0x9a, 0xb3, 0x69, 0x6c, 0x7d, 0xf1, 0x20, 0x09, 0xbe, 0xda, 0xc8, 0xfb, 0x6e, 0x23,
-	0xef, 0xa7, 0x8d, 0xbc, 0xd5, 0x9e, 0xb2, 0x74, 0xf5, 0x1b, 0x00, 0x00, 0xff, 0xff, 0x14, 0x6c,
-	0x36, 0xca, 0x2b, 0x02, 0x00, 0x00,
+	// 441 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x52, 0xcd, 0x6e, 0xd3, 0x40,
+	0x10, 0xee, 0xd6, 0x76, 0x68, 0xc6, 0x69, 0x6b, 0xa6, 0xa5, 0xb2, 0x8c, 0x14, 0x22, 0x8b, 0x43,
+	0x24, 0x24, 0xb7, 0x98, 0x03, 0x12, 0x37, 0x02, 0xbc, 0x80, 0xdb, 0x17, 0x70, 0xcd, 0x92, 0x58,
+	0x5d, 0x77, 0x4d, 0xbc, 0x06, 0xf9, 0x79, 0x78, 0x0f, 0xce, 0x1c, 0x79, 0x04, 0x94, 0x27, 0x41,
+	0xfb, 0xe7, 0xd8, 0xe1, 0xc2, 0x6d, 0xbf, 0x99, 0xf1, 0xcc, 0xf7, 0x63, 0xf0, 0x1b, 0xc1, 0x8b,
+	0x87, 0xa4, 0xde, 0x72, 0xc1, 0xd1, 0x53, 0x20, 0x7a, 0xbe, 0xe6, 0x7c, 0xcd, 0xe8, 0xb5, 0x2a,
+	0xde, 0xb7, 0x5f, 0xae, 0x69, 0x55, 0x8b, 0x4e, 0xcf, 0x44, 0x2f, 0x0e, 0x9b, 0xa2, 0xac, 0x68,
+	0x23, 0xf2, 0xaa, 0xd6, 0x03, 0x71, 0x00, 0x67, 0xef, 0x8b, 0x82, 0xb7, 0x8f, 0x22, 0xa3, 0x5f,
+	0x5b, 0xda, 0x88, 0xf8, 0x0c, 0x66, 0x7d, 0xa5, 0x66, 0x5d, 0x7c, 0x0a, 0xfe, 0x5d, 0x59, 0x3c,
+	0xd8, 0x76, 0x09, 0x53, 0x0d, 0x6b, 0xd6, 0xe1, 0x25, 0x78, 0xf5, 0xb6, 0x2c, 0x68, 0x48, 0x16,
+	0x64, 0x49, 0x32, 0x0d, 0x30, 0x01, 0xf7, 0x73, 0x2e, 0x68, 0x78, 0xbc, 0x20, 0x4b, 0x3f, 0x8d,
+	0x12, 0xcd, 0x21, 0xb1, 0x1c, 0x92, 0x3b, 0xcb, 0x21, 0x53, 0x73, 0x78, 0x05, 0x93, 0x6f, 0x9c,
+	0xb5, 0x15, 0x0d, 0x1d, 0xb5, 0xc6, 0x20, 0xc9, 0xe4, 0xc3, 0x26, 0xdf, 0xf6, 0xcc, 0x52, 0x00,
+	0x83, 0xe5, 0xed, 0x97, 0xea, 0x4a, 0x1e, 0x92, 0x85, 0xb3, 0xf4, 0xd3, 0x20, 0xd1, 0xd6, 0xa8,
+	0x81, 0x8f, 0xb9, 0xc8, 0xd5, 0xee, 0x3c, 0x3e, 0x87, 0x53, 0xa3, 0xa6, 0xd1, 0x72, 0x66, 0x00,
+	0xab, 0xb6, 0xb3, 0x2b, 0x01, 0x4e, 0x14, 0x32, 0x42, 0x6f, 0x29, 0x63, 0xb6, 0xe5, 0xc3, 0x54,
+	0x43, 0xd9, 0xfb, 0x41, 0x60, 0xda, 0xaf, 0x46, 0x04, 0x97, 0xd7, 0xf4, 0xd1, 0xa8, 0x56, 0x6f,
+	0x59, 0xdb, 0x94, 0xeb, 0x8d, 0x12, 0x4d, 0x32, 0xf5, 0xc6, 0x00, 0x1c, 0xc6, 0xbf, 0x1b, 0x55,
+	0xf2, 0x29, 0x0d, 0x2b, 0x18, 0x6f, 0x68, 0xe8, 0x6a, 0xc3, 0x14, 0x18, 0x18, 0xe0, 0x0d, 0x0d,
+	0xe8, 0x8d, 0x9c, 0xfc, 0x9f, 0x91, 0xe9, 0xcf, 0x63, 0xf0, 0x6e, 0xa5, 0x0d, 0xf8, 0x16, 0x9e,
+	0x18, 0xd9, 0xf8, 0xcc, 0x38, 0x33, 0x8e, 0x39, 0xba, 0x38, 0x2c, 0x4b, 0x99, 0x47, 0x78, 0x03,
+	0xae, 0x8c, 0x17, 0xd1, 0xb4, 0x07, 0xd1, 0x47, 0xc1, 0xa8, 0xa6, 0xe6, 0x6f, 0x08, 0xbe, 0x06,
+	0x4f, 0x39, 0x83, 0x17, 0xc3, 0x08, 0xec, 0x37, 0x4f, 0xc7, 0x45, 0x7d, 0xe4, 0x1d, 0x9c, 0xd8,
+	0x50, 0xf0, 0xea, 0x1f, 0x55, 0x9f, 0xe4, 0xff, 0x1b, 0x5d, 0x8e, 0xf9, 0x35, 0xf6, 0xdb, 0x57,
+	0xe0, 0xac, 0xda, 0x0e, 0xed, 0xde, 0x7d, 0x96, 0xd1, 0xf9, 0xb0, 0xa4, 0x87, 0x13, 0x70, 0x65,
+	0x86, 0xbd, 0x9a, 0x41, 0xbe, 0xbd, 0x9a, 0x7d, 0xc8, 0x47, 0xab, 0xd9, 0xaf, 0xdd, 0x9c, 0xfc,
+	0xde, 0xcd, 0xc9, 0x9f, 0xdd, 0x9c, 0xdc, 0x4f, 0x14, 0xa5, 0x37, 0x7f, 0x03, 0x00, 0x00, 0xff,
+	0xff, 0x48, 0x9b, 0xdc, 0x2b, 0x76, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -888,6 +1018,30 @@ func (m *TickReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
+	if m.Volume != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Volume))))
+		i--
+		dAtA[i] = 0x19
+	}
+	if m.Date != nil {
+		{
+			size, err := m.Date.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintStock(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Price != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Price))))
+		i--
+		dAtA[i] = 0x9
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -941,6 +1095,20 @@ func (m *ChartReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.XXX_unrecognized != nil {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.Data) > 0 {
+		for iNdEx := len(m.Data) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Data[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintStock(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
 	}
 	return len(dAtA) - i, nil
 }
@@ -1080,6 +1248,75 @@ func (m *SellReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *ChartData) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ChartData) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ChartData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Date != nil {
+		{
+			size, err := m.Date.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintStock(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x32
+	}
+	if m.Volume != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Volume))))
+		i--
+		dAtA[i] = 0x29
+	}
+	if m.Close != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Close))))
+		i--
+		dAtA[i] = 0x21
+	}
+	if m.Low != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Low))))
+		i--
+		dAtA[i] = 0x19
+	}
+	if m.High != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.High))))
+		i--
+		dAtA[i] = 0x11
+	}
+	if m.Open != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Open))))
+		i--
+		dAtA[i] = 0x9
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintStock(dAtA []byte, offset int, v uint64) int {
 	offset -= sovStock(v)
 	base := offset
@@ -1133,6 +1370,16 @@ func (m *TickReply) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if m.Price != 0 {
+		n += 9
+	}
+	if m.Date != nil {
+		l = m.Date.Size()
+		n += 1 + l + sovStock(uint64(l))
+	}
+	if m.Volume != 0 {
+		n += 9
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -1157,6 +1404,12 @@ func (m *ChartReply) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if len(m.Data) > 0 {
+		for _, e := range m.Data {
+			l = e.Size()
+			n += 1 + l + sovStock(uint64(l))
+		}
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -1217,6 +1470,37 @@ func (m *SellReply) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *ChartData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Open != 0 {
+		n += 9
+	}
+	if m.High != 0 {
+		n += 9
+	}
+	if m.Low != 0 {
+		n += 9
+	}
+	if m.Close != 0 {
+		n += 9
+	}
+	if m.Volume != 0 {
+		n += 9
+	}
+	if m.Date != nil {
+		l = m.Date.Size()
+		n += 1 + l + sovStock(uint64(l))
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -1420,6 +1704,64 @@ func (m *TickReply) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: TickReply: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Price", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Price = float64(math.Float64frombits(v))
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Date", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowStock
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthStock
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthStock
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Date == nil {
+				m.Date = &types.Timestamp{}
+			}
+			if err := m.Date.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Volume", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Volume = float64(math.Float64frombits(v))
 		default:
 			iNdEx = preIndex
 			skippy, err := skipStock(dAtA[iNdEx:])
@@ -1528,6 +1870,40 @@ func (m *ChartReply) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: ChartReply: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowStock
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthStock
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthStock
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Data = append(m.Data, &ChartData{})
+			if err := m.Data[len(m.Data)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipStock(dAtA[iNdEx:])
@@ -1798,6 +2174,151 @@ func (m *SellReply) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: SellReply: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipStock(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthStock
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthStock
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ChartData) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowStock
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ChartData: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ChartData: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Open", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Open = float64(math.Float64frombits(v))
+		case 2:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field High", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.High = float64(math.Float64frombits(v))
+		case 3:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Low", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Low = float64(math.Float64frombits(v))
+		case 4:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Close", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Close = float64(math.Float64frombits(v))
+		case 5:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Volume", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Volume = float64(math.Float64frombits(v))
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Date", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowStock
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthStock
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthStock
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Date == nil {
+				m.Date = &types.Timestamp{}
+			}
+			if err := m.Date.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipStock(dAtA[iNdEx:])

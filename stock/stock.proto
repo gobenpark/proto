@@ -3,6 +3,9 @@ package stock;
 
 //import "envoyproxy/protoc-gen-validate/validate/validate.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+
 
 service Stock {
   rpc Account(AccountRequest) returns (AccountReply) {}
@@ -26,16 +29,17 @@ message TickRequest {
 }
 
 message TickReply{
-
+  double price = 1;
+  google.protobuf.Timestamp date = 2;
+  double volume = 3;
 }
-
 
 message ChartRequest {
 
 }
 
 message ChartReply {
-
+  repeated ChartData data = 1;
 }
 
 message AccountsReply{}
@@ -55,4 +59,13 @@ message SellRequest{
 
 message SellReply {
 
+}
+
+message ChartData {
+  double open = 1;
+  double high = 2;
+  double low = 3;
+  double close = 4;
+  double volume = 5;
+  google.protobuf.Timestamp date = 6;
 }

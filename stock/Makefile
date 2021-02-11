@@ -17,7 +17,7 @@ proto-go:
      --gogofast_out=\
 Mgoogle/protobuf/empty.proto=github.com/gogo/protobuf/types,\
 Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/struct.proto=github.com/gogo/protobuf/types,plugins=grpc:. ./stock.proto
+Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,plugins=grpc:. ./stock.proto
 #Mswit-grpc-library-golang/protos/message.alpha/model.proto=golang.swit.dev/grpc/protos/message.alpha,\
 #Mswit-grpc-library-golang/protos/message.alpha/swagger/annotations.proto=golang.swit.dev/grpc/protos/message.alpha,\
 Mswit/swit-grpc-message-golang/proto/swagger/openapiv2.proto=golang.swit.dev/grpc/protos/message.alpha,plugins=grpc:. ./message.proto ./model.proto
