@@ -3,7 +3,7 @@
 import grpc
 
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-import stock_pb2 as stock__pb2
+from stock import stock_pb2 as stock_dot_stock__pb2
 
 
 class StockStub(object):
@@ -17,33 +17,33 @@ class StockStub(object):
         """
         self.Account = channel.unary_unary(
                 '/stock.Stock/Account',
-                request_serializer=stock__pb2.AccountRequest.SerializeToString,
-                response_deserializer=stock__pb2.AccountReply.FromString,
+                request_serializer=stock_dot_stock__pb2.AccountRequest.SerializeToString,
+                response_deserializer=stock_dot_stock__pb2.AccountReply.FromString,
                 )
         self.Tick = channel.unary_stream(
                 '/stock.Stock/Tick',
-                request_serializer=stock__pb2.TickRequest.SerializeToString,
-                response_deserializer=stock__pb2.TickReply.FromString,
+                request_serializer=stock_dot_stock__pb2.TickRequest.SerializeToString,
+                response_deserializer=stock_dot_stock__pb2.TickReply.FromString,
                 )
         self.Chart = channel.unary_unary(
                 '/stock.Stock/Chart',
-                request_serializer=stock__pb2.ChartRequest.SerializeToString,
-                response_deserializer=stock__pb2.ChartReply.FromString,
+                request_serializer=stock_dot_stock__pb2.ChartRequest.SerializeToString,
+                response_deserializer=stock_dot_stock__pb2.ChartReply.FromString,
                 )
         self.Accounts = channel.unary_unary(
                 '/stock.Stock/Accounts',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-                response_deserializer=stock__pb2.AccountsReply.FromString,
+                response_deserializer=stock_dot_stock__pb2.AccountsReply.FromString,
                 )
         self.Buy = channel.unary_unary(
                 '/stock.Stock/Buy',
-                request_serializer=stock__pb2.BuyRequest.SerializeToString,
-                response_deserializer=stock__pb2.BuyReply.FromString,
+                request_serializer=stock_dot_stock__pb2.BuyRequest.SerializeToString,
+                response_deserializer=stock_dot_stock__pb2.BuyReply.FromString,
                 )
         self.Sell = channel.unary_unary(
                 '/stock.Stock/Sell',
-                request_serializer=stock__pb2.SellRequest.SerializeToString,
-                response_deserializer=stock__pb2.SellReply.FromString,
+                request_serializer=stock_dot_stock__pb2.SellRequest.SerializeToString,
+                response_deserializer=stock_dot_stock__pb2.SellReply.FromString,
                 )
 
 
@@ -91,33 +91,33 @@ def add_StockServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Account': grpc.unary_unary_rpc_method_handler(
                     servicer.Account,
-                    request_deserializer=stock__pb2.AccountRequest.FromString,
-                    response_serializer=stock__pb2.AccountReply.SerializeToString,
+                    request_deserializer=stock_dot_stock__pb2.AccountRequest.FromString,
+                    response_serializer=stock_dot_stock__pb2.AccountReply.SerializeToString,
             ),
             'Tick': grpc.unary_stream_rpc_method_handler(
                     servicer.Tick,
-                    request_deserializer=stock__pb2.TickRequest.FromString,
-                    response_serializer=stock__pb2.TickReply.SerializeToString,
+                    request_deserializer=stock_dot_stock__pb2.TickRequest.FromString,
+                    response_serializer=stock_dot_stock__pb2.TickReply.SerializeToString,
             ),
             'Chart': grpc.unary_unary_rpc_method_handler(
                     servicer.Chart,
-                    request_deserializer=stock__pb2.ChartRequest.FromString,
-                    response_serializer=stock__pb2.ChartReply.SerializeToString,
+                    request_deserializer=stock_dot_stock__pb2.ChartRequest.FromString,
+                    response_serializer=stock_dot_stock__pb2.ChartReply.SerializeToString,
             ),
             'Accounts': grpc.unary_unary_rpc_method_handler(
                     servicer.Accounts,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
-                    response_serializer=stock__pb2.AccountsReply.SerializeToString,
+                    response_serializer=stock_dot_stock__pb2.AccountsReply.SerializeToString,
             ),
             'Buy': grpc.unary_unary_rpc_method_handler(
                     servicer.Buy,
-                    request_deserializer=stock__pb2.BuyRequest.FromString,
-                    response_serializer=stock__pb2.BuyReply.SerializeToString,
+                    request_deserializer=stock_dot_stock__pb2.BuyRequest.FromString,
+                    response_serializer=stock_dot_stock__pb2.BuyReply.SerializeToString,
             ),
             'Sell': grpc.unary_unary_rpc_method_handler(
                     servicer.Sell,
-                    request_deserializer=stock__pb2.SellRequest.FromString,
-                    response_serializer=stock__pb2.SellReply.SerializeToString,
+                    request_deserializer=stock_dot_stock__pb2.SellRequest.FromString,
+                    response_serializer=stock_dot_stock__pb2.SellReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -141,8 +141,8 @@ class Stock(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/stock.Stock/Account',
-            stock__pb2.AccountRequest.SerializeToString,
-            stock__pb2.AccountReply.FromString,
+            stock_dot_stock__pb2.AccountRequest.SerializeToString,
+            stock_dot_stock__pb2.AccountReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -158,8 +158,8 @@ class Stock(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_stream(request, target, '/stock.Stock/Tick',
-            stock__pb2.TickRequest.SerializeToString,
-            stock__pb2.TickReply.FromString,
+            stock_dot_stock__pb2.TickRequest.SerializeToString,
+            stock_dot_stock__pb2.TickReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -175,8 +175,8 @@ class Stock(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/stock.Stock/Chart',
-            stock__pb2.ChartRequest.SerializeToString,
-            stock__pb2.ChartReply.FromString,
+            stock_dot_stock__pb2.ChartRequest.SerializeToString,
+            stock_dot_stock__pb2.ChartReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -193,7 +193,7 @@ class Stock(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/stock.Stock/Accounts',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
-            stock__pb2.AccountsReply.FromString,
+            stock_dot_stock__pb2.AccountsReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -209,8 +209,8 @@ class Stock(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/stock.Stock/Buy',
-            stock__pb2.BuyRequest.SerializeToString,
-            stock__pb2.BuyReply.FromString,
+            stock_dot_stock__pb2.BuyRequest.SerializeToString,
+            stock_dot_stock__pb2.BuyReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -226,7 +226,7 @@ class Stock(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/stock.Stock/Sell',
-            stock__pb2.SellRequest.SerializeToString,
-            stock__pb2.SellReply.FromString,
+            stock_dot_stock__pb2.SellRequest.SerializeToString,
+            stock_dot_stock__pb2.SellReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
