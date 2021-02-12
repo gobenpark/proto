@@ -1,9 +1,8 @@
 .PHONEY: upload proto-go proto-python
 
 upload:
-	python -m pip freeze > requirements.txt
-	python setup.py sdist bdist_whell
-	python -m twine upload dist/*
+	python setup.py sdist bdist_wheel
+	python -m twine upload --skip-existing dist/*
 
 proto-python:
 	python -m grpc_tools.protoc -I=. \
