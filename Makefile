@@ -15,13 +15,11 @@ proto-python:
 
 proto-go:
 	protoc -I=. \
-     -I=${GOPATH}/src/swit \
      -I=${GOPATH}/src \
+     -I=${GOPATH}/bin \
      -I=${GOPATH}/src/github.com  \
-     -I=${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
      -I=${GOPATH}/src/github.com/envoyproxy/protoc-gen-validate --validate_out="lang=go:." \
      -I=${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway \
-     -I=${GOPATH}/src/swit/swit-grpc-library-golang \
      --grpc-gateway_out=logtostderr=true:.\
      --gogofast_out=\
 Mgoogle/protobuf/empty.proto=github.com/gogo/protobuf/types,\

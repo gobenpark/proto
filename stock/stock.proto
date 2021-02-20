@@ -24,7 +24,7 @@ message AccountReply {
 }
 
 message TickRequest {
-
+  string codes = 1;
 }
 
 message TickReply{
