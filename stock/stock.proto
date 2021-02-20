@@ -34,7 +34,7 @@ message TickReply{
 }
 
 message ChartRequest {
-
+  string code = 1;
 }
 
 message ChartReply {

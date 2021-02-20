@@ -320,6 +320,8 @@ func (m *ChartRequest) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Code
+
 	return nil
 }
 
