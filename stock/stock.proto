@@ -13,6 +13,7 @@ service Stock {
   rpc Accounts(google.protobuf.Empty) returns (AccountsReply) {}
   rpc Buy(BuyRequest) returns (BuyReply){}
   rpc Sell(SellRequest) returns (SellReply){}
+  rpc OrderList(OrderListRequest) returns (OrderListReply){}
 }
 
 message AccountRequest {
@@ -35,6 +36,7 @@ message TickReply{
 
 message ChartRequest {
   string code = 1;
+  google.protobuf.Timestamp to = 2;
 }
 
 message ChartReply {
@@ -67,4 +69,12 @@ message ChartData {
   double close = 4;
   double volume = 5;
   google.protobuf.Timestamp date = 6;
+}
+
+message OrderListRequest {
+
+}
+
+message OrderListReply {
+
 }
