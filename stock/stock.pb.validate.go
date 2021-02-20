@@ -1003,3 +1003,135 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = OrderListReplyValidationError{}
+
+// Validate checks the field values on CancleOrderRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *CancleOrderRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// CancleOrderRequestValidationError is the validation error returned by
+// CancleOrderRequest.Validate if the designated constraints aren't met.
+type CancleOrderRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CancleOrderRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CancleOrderRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CancleOrderRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CancleOrderRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CancleOrderRequestValidationError) ErrorName() string {
+	return "CancleOrderRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CancleOrderRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCancleOrderRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CancleOrderRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CancleOrderRequestValidationError{}
+
+// Validate checks the field values on CancleOrderReply with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *CancleOrderReply) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// CancleOrderReplyValidationError is the validation error returned by
+// CancleOrderReply.Validate if the designated constraints aren't met.
+type CancleOrderReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CancleOrderReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CancleOrderReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CancleOrderReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CancleOrderReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CancleOrderReplyValidationError) ErrorName() string { return "CancleOrderReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CancleOrderReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCancleOrderReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CancleOrderReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CancleOrderReplyValidationError{}
