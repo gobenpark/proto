@@ -699,6 +699,28 @@ func (m *BuyReply) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Id
+
+	// no validation rules for Code
+
+	// no validation rules for AvgPrice
+
+	// no validation rules for Volume
+
+	// no validation rules for Fee
+
+	// no validation rules for Price
+
+	if v, ok := interface{}(m.GetCreatedAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return BuyReplyValidationError{
+				field:  "CreatedAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	return nil
 }
 

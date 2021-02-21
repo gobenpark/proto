@@ -71,7 +71,13 @@ message BuyRequest {
 }
 
 message BuyReply {
-
+  string id = 1;
+  string code = 2;
+  double avgPrice = 3;
+  double volume = 4;
+  double fee = 5;
+  double price = 6;
+  google.protobuf.Timestamp createdAt = 7;
 }
 
 message SellRequest{
