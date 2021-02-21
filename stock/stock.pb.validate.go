@@ -786,6 +786,14 @@ func (m *SellRequest) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Code
+
+	// no validation rules for Otype
+
+	// no validation rules for Volume
+
+	// no validation rules for Price
+
 	return nil
 }
 
@@ -848,6 +856,28 @@ var _ interface {
 func (m *SellReply) Validate() error {
 	if m == nil {
 		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for Code
+
+	// no validation rules for AvgPrice
+
+	// no validation rules for Volume
+
+	// no validation rules for Fee
+
+	// no validation rules for Price
+
+	if v, ok := interface{}(m.GetCreatedAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return SellReplyValidationError{
+				field:  "CreatedAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
 	}
 
 	return nil

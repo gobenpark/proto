@@ -81,11 +81,20 @@ message BuyReply {
 }
 
 message SellRequest{
-
+  string code = 1;
+  OrderType otype = 2;
+  double volume = 3;
+  double price = 4;
 }
 
 message SellReply {
-
+  string id = 1;
+  string code = 2;
+  double avgPrice = 3;
+  double volume = 4;
+  double fee = 5;
+  double price = 6;
+  google.protobuf.Timestamp createdAt = 7;
 }
 
 message ChartData {
