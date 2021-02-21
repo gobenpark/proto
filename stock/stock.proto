@@ -20,9 +20,8 @@ service Stock {
 }
 
 enum OrderType{
-  None = 0;
-  MarketOrder = 1;
-  LimitOrder = 2;
+  MarketOrder = 0;
+  LimitOrder = 1;
 }
 
 message Account {
@@ -101,11 +100,10 @@ message ChartData {
 
 message Order {
   enum Side {
-    None = 0;
     //매도
-    Ask = 1;
+    Ask = 0;
     //매수
-    Bid = 2;
+    Bid = 1;
   }
 
   string id = 1;
