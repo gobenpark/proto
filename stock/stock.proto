@@ -20,8 +20,9 @@ service Stock {
 }
 
 enum OrderType{
-  MarketOrder = 0;
-  LimitOrder = 1;
+  None = 0;
+  MarketOrder = 1;
+  LimitOrder = 2;
 }
 
 message Account {
@@ -97,6 +98,7 @@ message ChartData {
   google.protobuf.Timestamp date = 6;
 }
 
+
 message Order {
   enum Side {
     None = 0;
@@ -105,12 +107,7 @@ message Order {
     //매수
     Bid = 2;
   }
-  enum OrderType {
-    //시장가
-    Market = 0;
-    //지정가
-    Limit = 1;
-  }
+
   string id = 1;
   Side side = 2;
   OrderType type = 3;
