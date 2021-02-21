@@ -106,7 +106,7 @@ message OrderListReply {
 }
 
 message CancelOrderRequest{
-
+  string id = 1;
 }
 
 message CancelOrderReply {

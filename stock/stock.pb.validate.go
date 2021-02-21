@@ -1129,6 +1129,8 @@ func (m *CancelOrderRequest) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Id
+
 	return nil
 }
 
