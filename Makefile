@@ -21,7 +21,7 @@ proto-go:
      -I=${GOPATH}/src/github.com/envoyproxy/protoc-gen-validate --validate_out="lang=go:." \
      -I=${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway \
      --grpc-gateway_out=logtostderr=true:.\
-     --gogofast_out=\
+     --gogoslick_out=\
 Mgoogle/protobuf/empty.proto=github.com/gogo/protobuf/types,\
 Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,\
 Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,plugins=grpc:. ./stock/stock.proto

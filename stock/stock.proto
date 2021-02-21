@@ -19,6 +19,11 @@ service Stock {
   rpc CancelOrder(CancelOrderRequest) returns (CancelOrderReply){}
 }
 
+enum OrderType{
+  MarketOrder = 0;
+  LimitOrder = 1;
+}
+
 message Account {
   string code = 1;
   double balance = 2;
@@ -59,7 +64,10 @@ message AccountsReply{
 
 
 message BuyRequest {
-
+  string code = 1;
+  OrderType otype = 2;
+  double volume = 3;
+  double price = 4;
 }
 
 message BuyReply {

@@ -627,6 +627,14 @@ func (m *BuyRequest) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Code
+
+	// no validation rules for Otype
+
+	// no validation rules for Volume
+
+	// no validation rules for Price
+
 	return nil
 }
 

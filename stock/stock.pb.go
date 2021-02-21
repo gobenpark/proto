@@ -15,6 +15,9 @@ import (
 	io "io"
 	math "math"
 	math_bits "math/bits"
+	reflect "reflect"
+	strconv "strconv"
+	strings "strings"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -28,19 +31,36 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type Account struct {
-	Code                 string   `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	Balance              float64  `protobuf:"fixed64,2,opt,name=balance,proto3" json:"balance,omitempty"`
-	AvgByPrice           float64  `protobuf:"fixed64,3,opt,name=avgByPrice,proto3" json:"avgByPrice,omitempty"`
-	TotalPrice           float64  `protobuf:"fixed64,4,opt,name=totalPrice,proto3" json:"totalPrice,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+type OrderType int32
+
+const (
+	MarketOrder OrderType = 0
+	LimitOrder  OrderType = 1
+)
+
+var OrderType_name = map[int32]string{
+	0: "MarketOrder",
+	1: "LimitOrder",
 }
 
-func (m *Account) Reset()         { *m = Account{} }
-func (m *Account) String() string { return proto.CompactTextString(m) }
-func (*Account) ProtoMessage()    {}
+var OrderType_value = map[string]int32{
+	"MarketOrder": 0,
+	"LimitOrder":  1,
+}
+
+func (OrderType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_e6b29708bd139bde, []int{0}
+}
+
+type Account struct {
+	Code       string  `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Balance    float64 `protobuf:"fixed64,2,opt,name=balance,proto3" json:"balance,omitempty"`
+	AvgByPrice float64 `protobuf:"fixed64,3,opt,name=avgByPrice,proto3" json:"avgByPrice,omitempty"`
+	TotalPrice float64 `protobuf:"fixed64,4,opt,name=totalPrice,proto3" json:"totalPrice,omitempty"`
+}
+
+func (m *Account) Reset()      { *m = Account{} }
+func (*Account) ProtoMessage() {}
 func (*Account) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{0}
 }
@@ -100,15 +120,11 @@ func (m *Account) GetTotalPrice() float64 {
 }
 
 type AccountRequest struct {
-	Account              string   `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Account string `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
 }
 
-func (m *AccountRequest) Reset()         { *m = AccountRequest{} }
-func (m *AccountRequest) String() string { return proto.CompactTextString(m) }
-func (*AccountRequest) ProtoMessage()    {}
+func (m *AccountRequest) Reset()      { *m = AccountRequest{} }
+func (*AccountRequest) ProtoMessage() {}
 func (*AccountRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{1}
 }
@@ -147,15 +163,11 @@ func (m *AccountRequest) GetAccount() string {
 }
 
 type AccountReply struct {
-	Info                 string   `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Info string `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
 }
 
-func (m *AccountReply) Reset()         { *m = AccountReply{} }
-func (m *AccountReply) String() string { return proto.CompactTextString(m) }
-func (*AccountReply) ProtoMessage()    {}
+func (m *AccountReply) Reset()      { *m = AccountReply{} }
+func (*AccountReply) ProtoMessage() {}
 func (*AccountReply) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{2}
 }
@@ -194,15 +206,11 @@ func (m *AccountReply) GetInfo() string {
 }
 
 type TickRequest struct {
-	Codes                string   `protobuf:"bytes,1,opt,name=codes,proto3" json:"codes,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Codes string `protobuf:"bytes,1,opt,name=codes,proto3" json:"codes,omitempty"`
 }
 
-func (m *TickRequest) Reset()         { *m = TickRequest{} }
-func (m *TickRequest) String() string { return proto.CompactTextString(m) }
-func (*TickRequest) ProtoMessage()    {}
+func (m *TickRequest) Reset()      { *m = TickRequest{} }
+func (*TickRequest) ProtoMessage() {}
 func (*TickRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{3}
 }
@@ -241,17 +249,13 @@ func (m *TickRequest) GetCodes() string {
 }
 
 type TickReply struct {
-	Price                float64          `protobuf:"fixed64,1,opt,name=price,proto3" json:"price,omitempty"`
-	Date                 *types.Timestamp `protobuf:"bytes,2,opt,name=date,proto3" json:"date,omitempty"`
-	Volume               float64          `protobuf:"fixed64,3,opt,name=volume,proto3" json:"volume,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
-	XXX_unrecognized     []byte           `json:"-"`
-	XXX_sizecache        int32            `json:"-"`
+	Price  float64          `protobuf:"fixed64,1,opt,name=price,proto3" json:"price,omitempty"`
+	Date   *types.Timestamp `protobuf:"bytes,2,opt,name=date,proto3" json:"date,omitempty"`
+	Volume float64          `protobuf:"fixed64,3,opt,name=volume,proto3" json:"volume,omitempty"`
 }
 
-func (m *TickReply) Reset()         { *m = TickReply{} }
-func (m *TickReply) String() string { return proto.CompactTextString(m) }
-func (*TickReply) ProtoMessage()    {}
+func (m *TickReply) Reset()      { *m = TickReply{} }
+func (*TickReply) ProtoMessage() {}
 func (*TickReply) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{4}
 }
@@ -304,16 +308,12 @@ func (m *TickReply) GetVolume() float64 {
 }
 
 type ChartRequest struct {
-	Code                 string           `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	To                   *types.Timestamp `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
-	XXX_unrecognized     []byte           `json:"-"`
-	XXX_sizecache        int32            `json:"-"`
+	Code string           `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	To   *types.Timestamp `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
 }
 
-func (m *ChartRequest) Reset()         { *m = ChartRequest{} }
-func (m *ChartRequest) String() string { return proto.CompactTextString(m) }
-func (*ChartRequest) ProtoMessage()    {}
+func (m *ChartRequest) Reset()      { *m = ChartRequest{} }
+func (*ChartRequest) ProtoMessage() {}
 func (*ChartRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{5}
 }
@@ -359,15 +359,11 @@ func (m *ChartRequest) GetTo() *types.Timestamp {
 }
 
 type ChartReply struct {
-	Data                 []*ChartData `protobuf:"bytes,1,rep,name=data,proto3" json:"data,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
+	Data []*ChartData `protobuf:"bytes,1,rep,name=data,proto3" json:"data,omitempty"`
 }
 
-func (m *ChartReply) Reset()         { *m = ChartReply{} }
-func (m *ChartReply) String() string { return proto.CompactTextString(m) }
-func (*ChartReply) ProtoMessage()    {}
+func (m *ChartReply) Reset()      { *m = ChartReply{} }
+func (*ChartReply) ProtoMessage() {}
 func (*ChartReply) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{6}
 }
@@ -406,15 +402,11 @@ func (m *ChartReply) GetData() []*ChartData {
 }
 
 type AccountsReply struct {
-	Accounts             []*Account `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
-	XXX_unrecognized     []byte     `json:"-"`
-	XXX_sizecache        int32      `json:"-"`
+	Accounts []*Account `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
 }
 
-func (m *AccountsReply) Reset()         { *m = AccountsReply{} }
-func (m *AccountsReply) String() string { return proto.CompactTextString(m) }
-func (*AccountsReply) ProtoMessage()    {}
+func (m *AccountsReply) Reset()      { *m = AccountsReply{} }
+func (*AccountsReply) ProtoMessage() {}
 func (*AccountsReply) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{7}
 }
@@ -453,14 +445,14 @@ func (m *AccountsReply) GetAccounts() []*Account {
 }
 
 type BuyRequest struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Code   string    `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Otype  OrderType `protobuf:"varint,2,opt,name=otype,proto3,enum=stock.OrderType" json:"otype,omitempty"`
+	Volume float64   `protobuf:"fixed64,3,opt,name=volume,proto3" json:"volume,omitempty"`
+	Price  float64   `protobuf:"fixed64,4,opt,name=price,proto3" json:"price,omitempty"`
 }
 
-func (m *BuyRequest) Reset()         { *m = BuyRequest{} }
-func (m *BuyRequest) String() string { return proto.CompactTextString(m) }
-func (*BuyRequest) ProtoMessage()    {}
+func (m *BuyRequest) Reset()      { *m = BuyRequest{} }
+func (*BuyRequest) ProtoMessage() {}
 func (*BuyRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{8}
 }
@@ -491,15 +483,39 @@ func (m *BuyRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BuyRequest proto.InternalMessageInfo
 
-type BuyReply struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+func (m *BuyRequest) GetCode() string {
+	if m != nil {
+		return m.Code
+	}
+	return ""
 }
 
-func (m *BuyReply) Reset()         { *m = BuyReply{} }
-func (m *BuyReply) String() string { return proto.CompactTextString(m) }
-func (*BuyReply) ProtoMessage()    {}
+func (m *BuyRequest) GetOtype() OrderType {
+	if m != nil {
+		return m.Otype
+	}
+	return MarketOrder
+}
+
+func (m *BuyRequest) GetVolume() float64 {
+	if m != nil {
+		return m.Volume
+	}
+	return 0
+}
+
+func (m *BuyRequest) GetPrice() float64 {
+	if m != nil {
+		return m.Price
+	}
+	return 0
+}
+
+type BuyReply struct {
+}
+
+func (m *BuyReply) Reset()      { *m = BuyReply{} }
+func (*BuyReply) ProtoMessage() {}
 func (*BuyReply) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{9}
 }
@@ -531,14 +547,10 @@ func (m *BuyReply) XXX_DiscardUnknown() {
 var xxx_messageInfo_BuyReply proto.InternalMessageInfo
 
 type SellRequest struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *SellRequest) Reset()         { *m = SellRequest{} }
-func (m *SellRequest) String() string { return proto.CompactTextString(m) }
-func (*SellRequest) ProtoMessage()    {}
+func (m *SellRequest) Reset()      { *m = SellRequest{} }
+func (*SellRequest) ProtoMessage() {}
 func (*SellRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{10}
 }
@@ -570,14 +582,10 @@ func (m *SellRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_SellRequest proto.InternalMessageInfo
 
 type SellReply struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *SellReply) Reset()         { *m = SellReply{} }
-func (m *SellReply) String() string { return proto.CompactTextString(m) }
-func (*SellReply) ProtoMessage()    {}
+func (m *SellReply) Reset()      { *m = SellReply{} }
+func (*SellReply) ProtoMessage() {}
 func (*SellReply) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{11}
 }
@@ -609,20 +617,16 @@ func (m *SellReply) XXX_DiscardUnknown() {
 var xxx_messageInfo_SellReply proto.InternalMessageInfo
 
 type ChartData struct {
-	Open                 float64          `protobuf:"fixed64,1,opt,name=open,proto3" json:"open,omitempty"`
-	High                 float64          `protobuf:"fixed64,2,opt,name=high,proto3" json:"high,omitempty"`
-	Low                  float64          `protobuf:"fixed64,3,opt,name=low,proto3" json:"low,omitempty"`
-	Close                float64          `protobuf:"fixed64,4,opt,name=close,proto3" json:"close,omitempty"`
-	Volume               float64          `protobuf:"fixed64,5,opt,name=volume,proto3" json:"volume,omitempty"`
-	Date                 *types.Timestamp `protobuf:"bytes,6,opt,name=date,proto3" json:"date,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
-	XXX_unrecognized     []byte           `json:"-"`
-	XXX_sizecache        int32            `json:"-"`
+	Open   float64          `protobuf:"fixed64,1,opt,name=open,proto3" json:"open,omitempty"`
+	High   float64          `protobuf:"fixed64,2,opt,name=high,proto3" json:"high,omitempty"`
+	Low    float64          `protobuf:"fixed64,3,opt,name=low,proto3" json:"low,omitempty"`
+	Close  float64          `protobuf:"fixed64,4,opt,name=close,proto3" json:"close,omitempty"`
+	Volume float64          `protobuf:"fixed64,5,opt,name=volume,proto3" json:"volume,omitempty"`
+	Date   *types.Timestamp `protobuf:"bytes,6,opt,name=date,proto3" json:"date,omitempty"`
 }
 
-func (m *ChartData) Reset()         { *m = ChartData{} }
-func (m *ChartData) String() string { return proto.CompactTextString(m) }
-func (*ChartData) ProtoMessage()    {}
+func (m *ChartData) Reset()      { *m = ChartData{} }
+func (*ChartData) ProtoMessage() {}
 func (*ChartData) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{12}
 }
@@ -696,14 +700,10 @@ func (m *ChartData) GetDate() *types.Timestamp {
 }
 
 type OrderListRequest struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *OrderListRequest) Reset()         { *m = OrderListRequest{} }
-func (m *OrderListRequest) String() string { return proto.CompactTextString(m) }
-func (*OrderListRequest) ProtoMessage()    {}
+func (m *OrderListRequest) Reset()      { *m = OrderListRequest{} }
+func (*OrderListRequest) ProtoMessage() {}
 func (*OrderListRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{13}
 }
@@ -735,14 +735,10 @@ func (m *OrderListRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_OrderListRequest proto.InternalMessageInfo
 
 type OrderListReply struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *OrderListReply) Reset()         { *m = OrderListReply{} }
-func (m *OrderListReply) String() string { return proto.CompactTextString(m) }
-func (*OrderListReply) ProtoMessage()    {}
+func (m *OrderListReply) Reset()      { *m = OrderListReply{} }
+func (*OrderListReply) ProtoMessage() {}
 func (*OrderListReply) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{14}
 }
@@ -774,14 +770,10 @@ func (m *OrderListReply) XXX_DiscardUnknown() {
 var xxx_messageInfo_OrderListReply proto.InternalMessageInfo
 
 type CancelOrderRequest struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CancelOrderRequest) Reset()         { *m = CancelOrderRequest{} }
-func (m *CancelOrderRequest) String() string { return proto.CompactTextString(m) }
-func (*CancelOrderRequest) ProtoMessage()    {}
+func (m *CancelOrderRequest) Reset()      { *m = CancelOrderRequest{} }
+func (*CancelOrderRequest) ProtoMessage() {}
 func (*CancelOrderRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{15}
 }
@@ -813,14 +805,10 @@ func (m *CancelOrderRequest) XXX_DiscardUnknown() {
 var xxx_messageInfo_CancelOrderRequest proto.InternalMessageInfo
 
 type CancelOrderReply struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CancelOrderReply) Reset()         { *m = CancelOrderReply{} }
-func (m *CancelOrderReply) String() string { return proto.CompactTextString(m) }
-func (*CancelOrderReply) ProtoMessage()    {}
+func (m *CancelOrderReply) Reset()      { *m = CancelOrderReply{} }
+func (*CancelOrderReply) ProtoMessage() {}
 func (*CancelOrderReply) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{16}
 }
@@ -852,6 +840,7 @@ func (m *CancelOrderReply) XXX_DiscardUnknown() {
 var xxx_messageInfo_CancelOrderReply proto.InternalMessageInfo
 
 func init() {
+	proto.RegisterEnum("stock.OrderType", OrderType_name, OrderType_value)
 	proto.RegisterType((*Account)(nil), "stock.Account")
 	proto.RegisterType((*AccountRequest)(nil), "stock.AccountRequest")
 	proto.RegisterType((*AccountReply)(nil), "stock.AccountReply")
@@ -874,46 +863,694 @@ func init() {
 func init() { proto.RegisterFile("stock/stock.proto", fileDescriptor_e6b29708bd139bde) }
 
 var fileDescriptor_e6b29708bd139bde = []byte{
-	// 618 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x54, 0xcf, 0x6e, 0xda, 0x4e,
-	0x10, 0x8e, 0x01, 0x13, 0x18, 0x13, 0x7e, 0xce, 0x86, 0x24, 0xfc, 0x5c, 0x89, 0xa2, 0x6d, 0x0f,
-	0x88, 0x4a, 0x26, 0xa5, 0x87, 0x4a, 0xad, 0x7a, 0x28, 0xb4, 0xb7, 0xaa, 0xad, 0x48, 0x5e, 0x60,
-	0x31, 0x0e, 0x58, 0x59, 0x58, 0x17, 0xaf, 0x13, 0xf9, 0x79, 0xfa, 0x26, 0x3d, 0xf5, 0xd8, 0x47,
-	0xa8, 0x78, 0x92, 0x6a, 0xff, 0x19, 0x03, 0x39, 0xe4, 0x82, 0x76, 0xbe, 0x99, 0xd9, 0xfd, 0xe6,
-	0x9b, 0x0f, 0xc3, 0x69, 0xc2, 0x59, 0x70, 0x37, 0x90, 0xbf, 0x7e, 0xbc, 0x66, 0x9c, 0x21, 0x5b,
-	0x06, 0xde, 0xb3, 0x39, 0x63, 0x73, 0x1a, 0x0e, 0x24, 0x38, 0x4d, 0x6f, 0x07, 0xe1, 0x32, 0xe6,
-	0x99, 0xaa, 0xf1, 0x9e, 0xef, 0x27, 0x79, 0xb4, 0x0c, 0x13, 0x4e, 0x96, 0xb1, 0x2a, 0xc0, 0x0f,
-	0x70, 0xfc, 0x31, 0x08, 0x58, 0xba, 0xe2, 0x08, 0x41, 0x25, 0x60, 0xb3, 0xb0, 0x6d, 0x75, 0xad,
-	0x5e, 0x7d, 0x22, 0xcf, 0xa8, 0x0d, 0xc7, 0x53, 0x42, 0xc9, 0x2a, 0x08, 0xdb, 0xa5, 0xae, 0xd5,
-	0xb3, 0x26, 0x26, 0x44, 0x1d, 0x00, 0x72, 0x3f, 0x1f, 0x65, 0xdf, 0xd7, 0x51, 0x10, 0xb6, 0xcb,
-	0x32, 0x59, 0x40, 0x44, 0x9e, 0x33, 0x4e, 0xa8, 0xca, 0x57, 0x54, 0x7e, 0x8b, 0xe0, 0x3e, 0x34,
-	0xf5, 0xc3, 0x93, 0xf0, 0x47, 0x1a, 0x26, 0x5c, 0xbc, 0x45, 0x14, 0xa2, 0x29, 0x98, 0x10, 0x63,
-	0x68, 0xe4, 0xb5, 0x31, 0xcd, 0x04, 0xd3, 0x68, 0x75, 0xcb, 0x0c, 0x53, 0x71, 0xc6, 0x2f, 0xc0,
-	0xb9, 0x89, 0x82, 0x3b, 0x73, 0x59, 0x0b, 0x6c, 0x31, 0x40, 0xa2, 0x6b, 0x54, 0x80, 0x23, 0xa8,
-	0xab, 0x22, 0x71, 0x4b, 0x0b, 0xec, 0x58, 0x92, 0xb3, 0x24, 0x39, 0x15, 0x20, 0x1f, 0x2a, 0x33,
-	0xc2, 0xd5, 0xb8, 0xce, 0xd0, 0xf3, 0x95, 0x80, 0xbe, 0x11, 0xd0, 0xbf, 0x31, 0x02, 0x4e, 0x64,
-	0x1d, 0xba, 0x80, 0xea, 0x3d, 0xa3, 0xe9, 0xd2, 0x68, 0xa0, 0x23, 0xfc, 0x15, 0x1a, 0xe3, 0x05,
-	0x59, 0xe7, 0xd3, 0x3d, 0xa6, 0x6e, 0x1f, 0x4a, 0x9c, 0x3d, 0xe1, 0xa5, 0x12, 0x67, 0x78, 0x08,
-	0xa0, 0xef, 0x13, 0xdc, 0x5f, 0x4a, 0x96, 0xa4, 0x6d, 0x75, 0xcb, 0x3d, 0x67, 0xe8, 0xfa, 0xca,
-	0x17, 0xb2, 0xe0, 0x13, 0xe1, 0x44, 0x72, 0x23, 0xf8, 0x3d, 0x9c, 0x68, 0xdd, 0x12, 0xd5, 0xd6,
-	0x87, 0x9a, 0xd6, 0x34, 0xd1, 0xad, 0x4d, 0xdd, 0x6a, 0xf4, 0xcd, 0xf3, 0xb8, 0x01, 0x30, 0x4a,
-	0x33, 0x4d, 0x1f, 0x03, 0xd4, 0x64, 0x14, 0xd3, 0x0c, 0x9f, 0x80, 0x73, 0x1d, 0x52, 0x6a, 0x52,
-	0x0e, 0xd4, 0x55, 0x28, 0x72, 0x3f, 0x2d, 0xa8, 0xe7, 0x34, 0xc4, 0xd0, 0x2c, 0x0e, 0x57, 0x5a,
-	0x61, 0x79, 0x16, 0xd8, 0x22, 0x9a, 0x2f, 0xb4, 0x9f, 0xe4, 0x19, 0xb9, 0x50, 0xa6, 0xec, 0x41,
-	0x2b, 0x28, 0x8e, 0x72, 0x7f, 0x94, 0x25, 0xc6, 0x39, 0x2a, 0x28, 0x88, 0x6d, 0x17, 0xc5, 0xce,
-	0x97, 0x56, 0x7d, 0xda, 0xd2, 0x30, 0x02, 0xf7, 0xdb, 0x7a, 0x16, 0xae, 0xbf, 0x44, 0x89, 0x59,
-	0x10, 0x76, 0xa1, 0x59, 0xc0, 0xc4, 0x2c, 0x2d, 0x40, 0x63, 0xe1, 0x75, 0x2a, 0x71, 0x53, 0x87,
-	0xc0, 0xdd, 0x41, 0x63, 0x9a, 0x0d, 0x7f, 0x95, 0xc1, 0xbe, 0x16, 0x3a, 0xa2, 0xb7, 0xdb, 0xff,
-	0xd3, 0xf9, 0x9e, 0xb4, 0xaa, 0xdf, 0x3b, 0xdb, 0x87, 0xc5, 0x53, 0x47, 0xe8, 0x0a, 0x2a, 0xc2,
-	0x9a, 0x08, 0xe9, 0x74, 0xc1, 0xcc, 0x9e, 0xbb, 0x83, 0xc9, 0xfa, 0x2b, 0x0b, 0xbd, 0x06, 0x5b,
-	0x2a, 0x8d, 0xce, 0x8a, 0xeb, 0x37, 0x3d, 0xa7, 0xbb, 0xa0, 0x7a, 0xe4, 0x1d, 0xd4, 0x8c, 0x21,
-	0xd0, 0xc5, 0x81, 0x4a, 0x9f, 0xc5, 0x87, 0xc3, 0x6b, 0xed, 0xf2, 0x4b, 0x4c, 0xef, 0x2b, 0x28,
-	0x8f, 0xd2, 0x0c, 0x99, 0x7b, 0xb7, 0xde, 0xf0, 0xfe, 0x2b, 0x42, 0xaa, 0xd8, 0x87, 0x8a, 0xf0,
-	0x44, 0x3e, 0x4d, 0xc1, 0x2f, 0xf9, 0x34, 0x5b, 0xd3, 0x1c, 0xa1, 0x0f, 0x50, 0xcf, 0xc5, 0x47,
-	0x97, 0xba, 0x60, 0x7f, 0x45, 0xde, 0xf9, 0x61, 0x42, 0xb5, 0x8f, 0xc1, 0x29, 0xec, 0x04, 0xfd,
-	0x6f, 0x66, 0x3f, 0xd8, 0x9e, 0x77, 0xf9, 0x58, 0x4a, 0x5e, 0x32, 0x6a, 0xfc, 0xde, 0x74, 0xac,
-	0x3f, 0x9b, 0x8e, 0xf5, 0x77, 0xd3, 0xb1, 0xa6, 0x55, 0x29, 0xcb, 0x9b, 0x7f, 0x01, 0x00, 0x00,
-	0xff, 0xff, 0x4b, 0xc4, 0x7c, 0x3a, 0x79, 0x05, 0x00, 0x00,
+	// 720 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x54, 0xcd, 0x4e, 0xdb, 0x4a,
+	0x14, 0xf6, 0x90, 0x04, 0xc8, 0x31, 0x04, 0x33, 0x04, 0xc8, 0xf5, 0x95, 0xe6, 0xa2, 0xb9, 0x55,
+	0x85, 0xd2, 0xca, 0xd0, 0xb4, 0x52, 0xa5, 0x56, 0x5d, 0x34, 0xb4, 0x3b, 0xfa, 0xa3, 0xc0, 0x0b,
+	0x18, 0x63, 0x82, 0x85, 0x93, 0x71, 0xe3, 0x09, 0xc8, 0xbb, 0x3e, 0x42, 0xdf, 0xa1, 0x9b, 0x3e,
+	0x47, 0x57, 0x5d, 0xb2, 0x64, 0x59, 0xcc, 0xa6, 0x4b, 0x1e, 0xa1, 0x9a, 0x3f, 0xc7, 0x01, 0x5a,
+	0xb1, 0x89, 0xe6, 0x7c, 0xe7, 0xcc, 0x9c, 0xef, 0x7c, 0xe7, 0x73, 0x60, 0x39, 0xe5, 0x2c, 0x38,
+	0xd9, 0x92, 0xbf, 0x5e, 0x32, 0x62, 0x9c, 0xe1, 0x9a, 0x0c, 0xdc, 0x7f, 0xfb, 0x8c, 0xf5, 0xe3,
+	0x70, 0x4b, 0x82, 0x07, 0xe3, 0xa3, 0xad, 0x70, 0x90, 0xf0, 0x4c, 0xd5, 0xb8, 0xff, 0xdd, 0x4c,
+	0xf2, 0x68, 0x10, 0xa6, 0xdc, 0x1f, 0x24, 0xaa, 0x80, 0x9e, 0xc1, 0xdc, 0xeb, 0x20, 0x60, 0xe3,
+	0x21, 0xc7, 0x18, 0xaa, 0x01, 0x3b, 0x0c, 0x5b, 0x68, 0x03, 0x6d, 0xd6, 0x7b, 0xf2, 0x8c, 0x5b,
+	0x30, 0x77, 0xe0, 0xc7, 0xfe, 0x30, 0x08, 0x5b, 0x33, 0x1b, 0x68, 0x13, 0xf5, 0x4c, 0x88, 0x09,
+	0x80, 0x7f, 0xda, 0xef, 0x66, 0x1f, 0x47, 0x51, 0x10, 0xb6, 0x2a, 0x32, 0x59, 0x42, 0x44, 0x9e,
+	0x33, 0xee, 0xc7, 0x2a, 0x5f, 0x55, 0xf9, 0x09, 0x42, 0xdb, 0xd0, 0xd0, 0x8d, 0x7b, 0xe1, 0xa7,
+	0x71, 0x98, 0x72, 0xd1, 0xcb, 0x57, 0x88, 0xa6, 0x60, 0x42, 0x4a, 0x61, 0xa1, 0xa8, 0x4d, 0xe2,
+	0x4c, 0x30, 0x8d, 0x86, 0x47, 0xcc, 0x30, 0x15, 0x67, 0xfa, 0x3f, 0xd8, 0xfb, 0x51, 0x70, 0x62,
+	0x1e, 0x6b, 0x42, 0x4d, 0x0c, 0x90, 0xea, 0x1a, 0x15, 0xd0, 0x08, 0xea, 0xaa, 0x48, 0xbc, 0xd2,
+	0x84, 0x5a, 0x22, 0xc9, 0x21, 0x49, 0x4e, 0x05, 0xd8, 0x83, 0xea, 0xa1, 0xcf, 0xd5, 0xb8, 0x76,
+	0xc7, 0xf5, 0x94, 0x80, 0x9e, 0x11, 0xd0, 0xdb, 0x37, 0x02, 0xf6, 0x64, 0x1d, 0x5e, 0x83, 0xd9,
+	0x53, 0x16, 0x8f, 0x07, 0x46, 0x03, 0x1d, 0xd1, 0xf7, 0xb0, 0xb0, 0x73, 0xec, 0x8f, 0x8a, 0xe9,
+	0xee, 0x52, 0xb7, 0x0d, 0x33, 0x9c, 0xdd, 0xa3, 0xd3, 0x0c, 0x67, 0xb4, 0x03, 0xa0, 0xdf, 0x13,
+	0xdc, 0x1f, 0x48, 0x96, 0x7e, 0x0b, 0x6d, 0x54, 0x36, 0xed, 0x8e, 0xe3, 0x29, 0x5f, 0xc8, 0x82,
+	0x37, 0x3e, 0xf7, 0x25, 0x37, 0x9f, 0xbe, 0x84, 0x45, 0xad, 0x5b, 0xaa, 0xae, 0xb5, 0x61, 0x5e,
+	0x6b, 0x9a, 0xea, 0xab, 0x0d, 0x7d, 0xd5, 0xe8, 0x5b, 0xe4, 0xe9, 0x29, 0x40, 0x77, 0x9c, 0xfd,
+	0x8d, 0xfe, 0x43, 0xa8, 0x31, 0x9e, 0x25, 0x4a, 0xab, 0x46, 0xc1, 0xe2, 0xc3, 0xe8, 0x30, 0x1c,
+	0xed, 0x67, 0x49, 0xd8, 0x53, 0xe9, 0x3f, 0x49, 0x34, 0x59, 0x40, 0xb5, 0xb4, 0x00, 0x0a, 0x30,
+	0x2f, 0xfb, 0x26, 0x71, 0x46, 0x17, 0xc1, 0xde, 0x0b, 0xe3, 0x58, 0x93, 0xa0, 0x36, 0xd4, 0x55,
+	0x28, 0x72, 0x5f, 0x11, 0xd4, 0x8b, 0x81, 0x05, 0x3f, 0x96, 0x84, 0x43, 0xbd, 0x4b, 0x79, 0x16,
+	0xd8, 0x71, 0xd4, 0x3f, 0xd6, 0xce, 0x95, 0x67, 0xec, 0x40, 0x25, 0x66, 0x67, 0x9a, 0x88, 0x38,
+	0x4a, 0xa7, 0xc4, 0x2c, 0x2d, 0x58, 0xc8, 0xa0, 0xc4, 0xb9, 0x36, 0xc5, 0xd9, 0xd8, 0x63, 0xf6,
+	0x7e, 0xf6, 0xa0, 0x18, 0x1c, 0xa9, 0xc7, 0x6e, 0x94, 0x1a, 0x2b, 0x50, 0x07, 0x1a, 0x25, 0x4c,
+	0xcc, 0xd2, 0x04, 0xbc, 0x23, 0xbe, 0xaa, 0x58, 0xe2, 0xa6, 0x0e, 0x83, 0x33, 0x85, 0x26, 0x71,
+	0xd6, 0x7e, 0x0c, 0xf5, 0x42, 0x5f, 0xbc, 0x04, 0xf6, 0x3b, 0x7f, 0x74, 0x12, 0x72, 0x09, 0x39,
+	0x16, 0x6e, 0x00, 0xec, 0x46, 0x83, 0x48, 0xc7, 0xa8, 0xf3, 0xbd, 0x02, 0xb5, 0x3d, 0xb1, 0x14,
+	0xfc, 0x7c, 0xf2, 0x9d, 0xaf, 0xde, 0x58, 0xb9, 0xea, 0xe6, 0xae, 0xdc, 0x84, 0x05, 0x31, 0x0b,
+	0x6f, 0x43, 0x55, 0x7c, 0x32, 0x18, 0xeb, 0x74, 0xe9, 0x23, 0x73, 0x9d, 0x29, 0x4c, 0xd6, 0x6f,
+	0x23, 0xfc, 0x04, 0x6a, 0x72, 0x2f, 0x78, 0xa5, 0x6c, 0x4b, 0x73, 0x67, 0x79, 0x1a, 0x54, 0x4d,
+	0x5e, 0xc0, 0xbc, 0x31, 0x2a, 0x5e, 0xbb, 0xa5, 0xe9, 0x5b, 0xf1, 0x87, 0xe6, 0x36, 0xa7, 0xf9,
+	0xa5, 0xe6, 0xee, 0x23, 0xa8, 0x74, 0xc7, 0x19, 0x36, 0xef, 0x4e, 0x3c, 0xeb, 0x2e, 0x95, 0x21,
+	0x55, 0xec, 0x41, 0x55, 0x38, 0xa8, 0x98, 0xa6, 0xe4, 0xae, 0x62, 0x9a, 0x89, 0xc5, 0x2c, 0xfc,
+	0x4a, 0xcb, 0x2d, 0x56, 0x85, 0xd7, 0xcb, 0x06, 0x2f, 0x2d, 0xd4, 0x5d, 0xbd, 0x9d, 0x50, 0xd7,
+	0x77, 0xc0, 0x2e, 0x6d, 0x10, 0xff, 0x63, 0x66, 0xbf, 0xb5, 0x6b, 0x77, 0xfd, 0xae, 0x94, 0x7c,
+	0xa4, 0xfb, 0xec, 0xfc, 0x92, 0x58, 0x17, 0x97, 0xc4, 0xba, 0xbe, 0x24, 0xe8, 0x73, 0x4e, 0xd0,
+	0xb7, 0x9c, 0xa0, 0x1f, 0x39, 0x41, 0xe7, 0x39, 0x41, 0x3f, 0x73, 0x82, 0x7e, 0xe5, 0xc4, 0xba,
+	0xce, 0x09, 0xfa, 0x72, 0x45, 0xac, 0xf3, 0x2b, 0x62, 0x5d, 0x5c, 0x11, 0xeb, 0x60, 0x56, 0xca,
+	0xf7, 0xf4, 0x77, 0x00, 0x00, 0x00, 0xff, 0xff, 0x55, 0xed, 0xc6, 0xc4, 0x39, 0x06, 0x00, 0x00,
+}
+
+func (x OrderType) String() string {
+	s, ok := OrderType_name[int32(x)]
+	if ok {
+		return s
+	}
+	return strconv.Itoa(int(x))
+}
+func (this *Account) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Account)
+	if !ok {
+		that2, ok := that.(Account)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Code != that1.Code {
+		return false
+	}
+	if this.Balance != that1.Balance {
+		return false
+	}
+	if this.AvgByPrice != that1.AvgByPrice {
+		return false
+	}
+	if this.TotalPrice != that1.TotalPrice {
+		return false
+	}
+	return true
+}
+func (this *AccountRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*AccountRequest)
+	if !ok {
+		that2, ok := that.(AccountRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Account != that1.Account {
+		return false
+	}
+	return true
+}
+func (this *AccountReply) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*AccountReply)
+	if !ok {
+		that2, ok := that.(AccountReply)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Info != that1.Info {
+		return false
+	}
+	return true
+}
+func (this *TickRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*TickRequest)
+	if !ok {
+		that2, ok := that.(TickRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Codes != that1.Codes {
+		return false
+	}
+	return true
+}
+func (this *TickReply) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*TickReply)
+	if !ok {
+		that2, ok := that.(TickReply)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Price != that1.Price {
+		return false
+	}
+	if !this.Date.Equal(that1.Date) {
+		return false
+	}
+	if this.Volume != that1.Volume {
+		return false
+	}
+	return true
+}
+func (this *ChartRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ChartRequest)
+	if !ok {
+		that2, ok := that.(ChartRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Code != that1.Code {
+		return false
+	}
+	if !this.To.Equal(that1.To) {
+		return false
+	}
+	return true
+}
+func (this *ChartReply) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ChartReply)
+	if !ok {
+		that2, ok := that.(ChartReply)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if len(this.Data) != len(that1.Data) {
+		return false
+	}
+	for i := range this.Data {
+		if !this.Data[i].Equal(that1.Data[i]) {
+			return false
+		}
+	}
+	return true
+}
+func (this *AccountsReply) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*AccountsReply)
+	if !ok {
+		that2, ok := that.(AccountsReply)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if len(this.Accounts) != len(that1.Accounts) {
+		return false
+	}
+	for i := range this.Accounts {
+		if !this.Accounts[i].Equal(that1.Accounts[i]) {
+			return false
+		}
+	}
+	return true
+}
+func (this *BuyRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*BuyRequest)
+	if !ok {
+		that2, ok := that.(BuyRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Code != that1.Code {
+		return false
+	}
+	if this.Otype != that1.Otype {
+		return false
+	}
+	if this.Volume != that1.Volume {
+		return false
+	}
+	if this.Price != that1.Price {
+		return false
+	}
+	return true
+}
+func (this *BuyReply) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*BuyReply)
+	if !ok {
+		that2, ok := that.(BuyReply)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *SellRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SellRequest)
+	if !ok {
+		that2, ok := that.(SellRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *SellReply) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SellReply)
+	if !ok {
+		that2, ok := that.(SellReply)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *ChartData) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*ChartData)
+	if !ok {
+		that2, ok := that.(ChartData)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Open != that1.Open {
+		return false
+	}
+	if this.High != that1.High {
+		return false
+	}
+	if this.Low != that1.Low {
+		return false
+	}
+	if this.Close != that1.Close {
+		return false
+	}
+	if this.Volume != that1.Volume {
+		return false
+	}
+	if !this.Date.Equal(that1.Date) {
+		return false
+	}
+	return true
+}
+func (this *OrderListRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*OrderListRequest)
+	if !ok {
+		that2, ok := that.(OrderListRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *OrderListReply) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*OrderListReply)
+	if !ok {
+		that2, ok := that.(OrderListReply)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *CancelOrderRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*CancelOrderRequest)
+	if !ok {
+		that2, ok := that.(CancelOrderRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *CancelOrderReply) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*CancelOrderReply)
+	if !ok {
+		that2, ok := that.(CancelOrderReply)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *Account) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 8)
+	s = append(s, "&stock.Account{")
+	s = append(s, "Code: "+fmt.Sprintf("%#v", this.Code)+",\n")
+	s = append(s, "Balance: "+fmt.Sprintf("%#v", this.Balance)+",\n")
+	s = append(s, "AvgByPrice: "+fmt.Sprintf("%#v", this.AvgByPrice)+",\n")
+	s = append(s, "TotalPrice: "+fmt.Sprintf("%#v", this.TotalPrice)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *AccountRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&stock.AccountRequest{")
+	s = append(s, "Account: "+fmt.Sprintf("%#v", this.Account)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *AccountReply) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&stock.AccountReply{")
+	s = append(s, "Info: "+fmt.Sprintf("%#v", this.Info)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *TickRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&stock.TickRequest{")
+	s = append(s, "Codes: "+fmt.Sprintf("%#v", this.Codes)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *TickReply) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&stock.TickReply{")
+	s = append(s, "Price: "+fmt.Sprintf("%#v", this.Price)+",\n")
+	if this.Date != nil {
+		s = append(s, "Date: "+fmt.Sprintf("%#v", this.Date)+",\n")
+	}
+	s = append(s, "Volume: "+fmt.Sprintf("%#v", this.Volume)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ChartRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&stock.ChartRequest{")
+	s = append(s, "Code: "+fmt.Sprintf("%#v", this.Code)+",\n")
+	if this.To != nil {
+		s = append(s, "To: "+fmt.Sprintf("%#v", this.To)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ChartReply) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&stock.ChartReply{")
+	if this.Data != nil {
+		s = append(s, "Data: "+fmt.Sprintf("%#v", this.Data)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *AccountsReply) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&stock.AccountsReply{")
+	if this.Accounts != nil {
+		s = append(s, "Accounts: "+fmt.Sprintf("%#v", this.Accounts)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *BuyRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 8)
+	s = append(s, "&stock.BuyRequest{")
+	s = append(s, "Code: "+fmt.Sprintf("%#v", this.Code)+",\n")
+	s = append(s, "Otype: "+fmt.Sprintf("%#v", this.Otype)+",\n")
+	s = append(s, "Volume: "+fmt.Sprintf("%#v", this.Volume)+",\n")
+	s = append(s, "Price: "+fmt.Sprintf("%#v", this.Price)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *BuyReply) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&stock.BuyReply{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *SellRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&stock.SellRequest{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *SellReply) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&stock.SellReply{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *ChartData) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 10)
+	s = append(s, "&stock.ChartData{")
+	s = append(s, "Open: "+fmt.Sprintf("%#v", this.Open)+",\n")
+	s = append(s, "High: "+fmt.Sprintf("%#v", this.High)+",\n")
+	s = append(s, "Low: "+fmt.Sprintf("%#v", this.Low)+",\n")
+	s = append(s, "Close: "+fmt.Sprintf("%#v", this.Close)+",\n")
+	s = append(s, "Volume: "+fmt.Sprintf("%#v", this.Volume)+",\n")
+	if this.Date != nil {
+		s = append(s, "Date: "+fmt.Sprintf("%#v", this.Date)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *OrderListRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&stock.OrderListRequest{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *OrderListReply) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&stock.OrderListReply{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *CancelOrderRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&stock.CancelOrderRequest{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *CancelOrderReply) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&stock.CancelOrderReply{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func valueToGoStringStock(v interface{}, typ string) string {
+	rv := reflect.ValueOf(v)
+	if rv.IsNil() {
+		return "nil"
+	}
+	pv := reflect.Indirect(rv).Interface()
+	return fmt.Sprintf("func(v %v) *%v { return &v } ( %#v )", typ, typ, pv)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1300,10 +1937,6 @@ func (m *Account) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.TotalPrice != 0 {
 		i -= 8
 		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.TotalPrice))))
@@ -1352,10 +1985,6 @@ func (m *AccountRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.Account) > 0 {
 		i -= len(m.Account)
 		copy(dAtA[i:], m.Account)
@@ -1386,10 +2015,6 @@ func (m *AccountReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.Info) > 0 {
 		i -= len(m.Info)
 		copy(dAtA[i:], m.Info)
@@ -1420,10 +2045,6 @@ func (m *TickRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.Codes) > 0 {
 		i -= len(m.Codes)
 		copy(dAtA[i:], m.Codes)
@@ -1454,10 +2075,6 @@ func (m *TickReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.Volume != 0 {
 		i -= 8
 		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Volume))))
@@ -1505,10 +2122,6 @@ func (m *ChartRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.To != nil {
 		{
 			size, err := m.To.MarshalToSizedBuffer(dAtA[:i])
@@ -1551,10 +2164,6 @@ func (m *ChartReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.Data) > 0 {
 		for iNdEx := len(m.Data) - 1; iNdEx >= 0; iNdEx-- {
 			{
@@ -1592,10 +2201,6 @@ func (m *AccountsReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if len(m.Accounts) > 0 {
 		for iNdEx := len(m.Accounts) - 1; iNdEx >= 0; iNdEx-- {
 			{
@@ -1633,9 +2238,29 @@ func (m *BuyRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
+	if m.Price != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Price))))
+		i--
+		dAtA[i] = 0x21
+	}
+	if m.Volume != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Volume))))
+		i--
+		dAtA[i] = 0x19
+	}
+	if m.Otype != 0 {
+		i = encodeVarintStock(dAtA, i, uint64(m.Otype))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Code) > 0 {
+		i -= len(m.Code)
+		copy(dAtA[i:], m.Code)
+		i = encodeVarintStock(dAtA, i, uint64(len(m.Code)))
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -1660,10 +2285,6 @@ func (m *BuyReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -1687,10 +2308,6 @@ func (m *SellRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -1714,10 +2331,6 @@ func (m *SellReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -1741,10 +2354,6 @@ func (m *ChartData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	if m.Date != nil {
 		{
 			size, err := m.Date.MarshalToSizedBuffer(dAtA[:i])
@@ -1810,10 +2419,6 @@ func (m *OrderListRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -1837,10 +2442,6 @@ func (m *OrderListReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -1864,10 +2465,6 @@ func (m *CancelOrderRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -1891,10 +2488,6 @@ func (m *CancelOrderReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -1928,9 +2521,6 @@ func (m *Account) Size() (n int) {
 	if m.TotalPrice != 0 {
 		n += 9
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -1943,9 +2533,6 @@ func (m *AccountRequest) Size() (n int) {
 	l = len(m.Account)
 	if l > 0 {
 		n += 1 + l + sovStock(uint64(l))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -1960,9 +2547,6 @@ func (m *AccountReply) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovStock(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -1975,9 +2559,6 @@ func (m *TickRequest) Size() (n int) {
 	l = len(m.Codes)
 	if l > 0 {
 		n += 1 + l + sovStock(uint64(l))
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -1998,9 +2579,6 @@ func (m *TickReply) Size() (n int) {
 	if m.Volume != 0 {
 		n += 9
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -2018,9 +2596,6 @@ func (m *ChartRequest) Size() (n int) {
 		l = m.To.Size()
 		n += 1 + l + sovStock(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -2035,9 +2610,6 @@ func (m *ChartReply) Size() (n int) {
 			l = e.Size()
 			n += 1 + l + sovStock(uint64(l))
 		}
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -2054,9 +2626,6 @@ func (m *AccountsReply) Size() (n int) {
 			n += 1 + l + sovStock(uint64(l))
 		}
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -2066,8 +2635,18 @@ func (m *BuyRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
+	l = len(m.Code)
+	if l > 0 {
+		n += 1 + l + sovStock(uint64(l))
+	}
+	if m.Otype != 0 {
+		n += 1 + sovStock(uint64(m.Otype))
+	}
+	if m.Volume != 0 {
+		n += 9
+	}
+	if m.Price != 0 {
+		n += 9
 	}
 	return n
 }
@@ -2078,9 +2657,6 @@ func (m *BuyReply) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -2090,9 +2666,6 @@ func (m *SellRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -2102,9 +2675,6 @@ func (m *SellReply) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -2133,9 +2703,6 @@ func (m *ChartData) Size() (n int) {
 		l = m.Date.Size()
 		n += 1 + l + sovStock(uint64(l))
 	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -2145,9 +2712,6 @@ func (m *OrderListRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -2157,9 +2721,6 @@ func (m *OrderListReply) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -2169,9 +2730,6 @@ func (m *CancelOrderRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -2181,9 +2739,6 @@ func (m *CancelOrderReply) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
 	return n
 }
 
@@ -2192,6 +2747,201 @@ func sovStock(x uint64) (n int) {
 }
 func sozStock(x uint64) (n int) {
 	return sovStock(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (this *Account) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&Account{`,
+		`Code:` + fmt.Sprintf("%v", this.Code) + `,`,
+		`Balance:` + fmt.Sprintf("%v", this.Balance) + `,`,
+		`AvgByPrice:` + fmt.Sprintf("%v", this.AvgByPrice) + `,`,
+		`TotalPrice:` + fmt.Sprintf("%v", this.TotalPrice) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *AccountRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&AccountRequest{`,
+		`Account:` + fmt.Sprintf("%v", this.Account) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *AccountReply) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&AccountReply{`,
+		`Info:` + fmt.Sprintf("%v", this.Info) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *TickRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&TickRequest{`,
+		`Codes:` + fmt.Sprintf("%v", this.Codes) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *TickReply) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&TickReply{`,
+		`Price:` + fmt.Sprintf("%v", this.Price) + `,`,
+		`Date:` + strings.Replace(fmt.Sprintf("%v", this.Date), "Timestamp", "types.Timestamp", 1) + `,`,
+		`Volume:` + fmt.Sprintf("%v", this.Volume) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ChartRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ChartRequest{`,
+		`Code:` + fmt.Sprintf("%v", this.Code) + `,`,
+		`To:` + strings.Replace(fmt.Sprintf("%v", this.To), "Timestamp", "types.Timestamp", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ChartReply) String() string {
+	if this == nil {
+		return "nil"
+	}
+	repeatedStringForData := "[]*ChartData{"
+	for _, f := range this.Data {
+		repeatedStringForData += strings.Replace(f.String(), "ChartData", "ChartData", 1) + ","
+	}
+	repeatedStringForData += "}"
+	s := strings.Join([]string{`&ChartReply{`,
+		`Data:` + repeatedStringForData + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *AccountsReply) String() string {
+	if this == nil {
+		return "nil"
+	}
+	repeatedStringForAccounts := "[]*Account{"
+	for _, f := range this.Accounts {
+		repeatedStringForAccounts += strings.Replace(f.String(), "Account", "Account", 1) + ","
+	}
+	repeatedStringForAccounts += "}"
+	s := strings.Join([]string{`&AccountsReply{`,
+		`Accounts:` + repeatedStringForAccounts + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *BuyRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&BuyRequest{`,
+		`Code:` + fmt.Sprintf("%v", this.Code) + `,`,
+		`Otype:` + fmt.Sprintf("%v", this.Otype) + `,`,
+		`Volume:` + fmt.Sprintf("%v", this.Volume) + `,`,
+		`Price:` + fmt.Sprintf("%v", this.Price) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *BuyReply) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&BuyReply{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *SellRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&SellRequest{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *SellReply) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&SellReply{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *ChartData) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&ChartData{`,
+		`Open:` + fmt.Sprintf("%v", this.Open) + `,`,
+		`High:` + fmt.Sprintf("%v", this.High) + `,`,
+		`Low:` + fmt.Sprintf("%v", this.Low) + `,`,
+		`Close:` + fmt.Sprintf("%v", this.Close) + `,`,
+		`Volume:` + fmt.Sprintf("%v", this.Volume) + `,`,
+		`Date:` + strings.Replace(fmt.Sprintf("%v", this.Date), "Timestamp", "types.Timestamp", 1) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *OrderListRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&OrderListRequest{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *OrderListReply) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&OrderListReply{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *CancelOrderRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&CancelOrderRequest{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *CancelOrderReply) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&CancelOrderReply{`,
+		`}`,
+	}, "")
+	return s
+}
+func valueToStringStock(v interface{}) string {
+	rv := reflect.ValueOf(v)
+	if rv.IsNil() {
+		return "nil"
+	}
+	pv := reflect.Indirect(rv).Interface()
+	return fmt.Sprintf("*%v", pv)
 }
 func (m *Account) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
@@ -2299,7 +3049,6 @@ func (m *Account) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -2382,7 +3131,6 @@ func (m *AccountRequest) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -2465,7 +3213,6 @@ func (m *AccountReply) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -2548,7 +3295,6 @@ func (m *TickRequest) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -2657,7 +3403,6 @@ func (m *TickReply) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -2776,7 +3521,6 @@ func (m *ChartRequest) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -2861,7 +3605,6 @@ func (m *ChartReply) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -2946,7 +3689,6 @@ func (m *AccountsReply) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -2985,6 +3727,79 @@ func (m *BuyRequest) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: BuyRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Code", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowStock
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthStock
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthStock
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Code = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Otype", wireType)
+			}
+			m.Otype = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowStock
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Otype |= OrderType(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Volume", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Volume = float64(math.Float64frombits(v))
+		case 4:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Price", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Price = float64(math.Float64frombits(v))
 		default:
 			iNdEx = preIndex
 			skippy, err := skipStock(dAtA[iNdEx:])
@@ -2997,7 +3812,6 @@ func (m *BuyRequest) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -3048,7 +3862,6 @@ func (m *BuyReply) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -3099,7 +3912,6 @@ func (m *SellRequest) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -3150,7 +3962,6 @@ func (m *SellReply) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -3292,7 +4103,6 @@ func (m *ChartData) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -3343,7 +4153,6 @@ func (m *OrderListRequest) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -3394,7 +4203,6 @@ func (m *OrderListReply) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -3445,7 +4253,6 @@ func (m *CancelOrderRequest) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -3496,7 +4303,6 @@ func (m *CancelOrderReply) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
