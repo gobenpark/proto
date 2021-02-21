@@ -16,7 +16,7 @@ service Stock {
   rpc Buy(BuyRequest) returns (BuyReply){}
   rpc Sell(SellRequest) returns (SellReply){}
   rpc OrderList(OrderListRequest) returns (OrderListReply){}
-  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderReply){}
+  rpc CancelOrder(CancelOrderRequest) returns (google.protobuf.Empty){}
 }
 
 enum OrderType{
@@ -107,8 +107,4 @@ message OrderListReply {
 
 message CancelOrderRequest{
   string id = 1;
-}
-
-message CancelOrderReply {
-
 }
