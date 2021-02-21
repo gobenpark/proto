@@ -15,7 +15,7 @@ service Stock {
   rpc Accounts(google.protobuf.Empty) returns (AccountsReply) {}
   rpc Buy(BuyRequest) returns (BuyReply){}
   rpc Sell(SellRequest) returns (SellReply){}
-  rpc OrderList(OrderListRequest) returns (OrderListReply){}
+  rpc OrderList(google.protobuf.Empty) returns (OrderListReply){}
   rpc CancelOrder(CancelOrderRequest) returns (google.protobuf.Empty){}
 }
 
@@ -97,12 +97,34 @@ message ChartData {
   google.protobuf.Timestamp date = 6;
 }
 
-message OrderListRequest {
-
+message Order {
+  enum Side {
+    //매도
+    Ask = 0;
+    //매수
+    Bid = 1;
+  }
+  enum OrderType {
+    //시장가
+    Market = 0;
+    //지정가
+    Limit = 1;
+  }
+  string id = 1;
+  Side side = 2;
+  OrderType type = 3;
+  string code = 4;
+  google.protobuf.Timestamp createdAt = 5;
+  double fee = 6;
+  string state = 7;
+  double volume = 8;
+  double price = 9;
+  //해당 주문에 걸린 체결 수
+  double tradeCount = 10;
 }
 
 message OrderListReply {
-
+  repeated Order order = 1;
 }
 
 message CancelOrderRequest{

@@ -991,20 +991,47 @@ var _ interface {
 	ErrorName() string
 } = ChartDataValidationError{}
 
-// Validate checks the field values on OrderListRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, an
-// error is returned.
-func (m *OrderListRequest) Validate() error {
+// Validate checks the field values on Order with the rules defined in the
+// proto definition for this message. If any rules are violated, an error is returned.
+func (m *Order) Validate() error {
 	if m == nil {
 		return nil
 	}
 
+	// no validation rules for Id
+
+	// no validation rules for Side
+
+	// no validation rules for Type
+
+	// no validation rules for Code
+
+	if v, ok := interface{}(m.GetCreatedAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return OrderValidationError{
+				field:  "CreatedAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for Fee
+
+	// no validation rules for State
+
+	// no validation rules for Volume
+
+	// no validation rules for Price
+
+	// no validation rules for TradeCount
+
 	return nil
 }
 
-// OrderListRequestValidationError is the validation error returned by
-// OrderListRequest.Validate if the designated constraints aren't met.
-type OrderListRequestValidationError struct {
+// OrderValidationError is the validation error returned by Order.Validate if
+// the designated constraints aren't met.
+type OrderValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1012,22 +1039,22 @@ type OrderListRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e OrderListRequestValidationError) Field() string { return e.field }
+func (e OrderValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e OrderListRequestValidationError) Reason() string { return e.reason }
+func (e OrderValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e OrderListRequestValidationError) Cause() error { return e.cause }
+func (e OrderValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e OrderListRequestValidationError) Key() bool { return e.key }
+func (e OrderValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e OrderListRequestValidationError) ErrorName() string { return "OrderListRequestValidationError" }
+func (e OrderValidationError) ErrorName() string { return "OrderValidationError" }
 
 // Error satisfies the builtin error interface
-func (e OrderListRequestValidationError) Error() string {
+func (e OrderValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1039,14 +1066,14 @@ func (e OrderListRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sOrderListRequest.%s: %s%s",
+		"invalid %sOrder.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = OrderListRequestValidationError{}
+var _ error = OrderValidationError{}
 
 var _ interface {
 	Field() string
@@ -1054,7 +1081,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = OrderListRequestValidationError{}
+} = OrderValidationError{}
 
 // Validate checks the field values on OrderListReply with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
@@ -1062,6 +1089,21 @@ var _ interface {
 func (m *OrderListReply) Validate() error {
 	if m == nil {
 		return nil
+	}
+
+	for idx, item := range m.GetOrder() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return OrderListReplyValidationError{
+					field:  fmt.Sprintf("Order[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	}
 
 	return nil
