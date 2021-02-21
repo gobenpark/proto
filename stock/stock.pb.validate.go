@@ -33,6 +33,78 @@ var (
 	_ = ptypes.DynamicAny{}
 )
 
+// Validate checks the field values on Account with the rules defined in the
+// proto definition for this message. If any rules are violated, an error is returned.
+func (m *Account) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Code
+
+	// no validation rules for Balance
+
+	// no validation rules for AvgByPrice
+
+	// no validation rules for TotalPrice
+
+	return nil
+}
+
+// AccountValidationError is the validation error returned by Account.Validate
+// if the designated constraints aren't met.
+type AccountValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AccountValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AccountValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AccountValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AccountValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AccountValidationError) ErrorName() string { return "AccountValidationError" }
+
+// Error satisfies the builtin error interface
+func (e AccountValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAccount.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AccountValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AccountValidationError{}
+
 // Validate checks the field values on AccountRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
 // is returned.
@@ -474,6 +546,21 @@ var _ interface {
 func (m *AccountsReply) Validate() error {
 	if m == nil {
 		return nil
+	}
+
+	for idx, item := range m.GetAccounts() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return AccountsReplyValidationError{
+					field:  fmt.Sprintf("Accounts[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	}
 
 	return nil
@@ -1004,10 +1091,10 @@ var _ interface {
 	ErrorName() string
 } = OrderListReplyValidationError{}
 
-// Validate checks the field values on CancleOrderRequest with the rules
+// Validate checks the field values on CancelOrderRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, an error is returned.
-func (m *CancleOrderRequest) Validate() error {
+func (m *CancelOrderRequest) Validate() error {
 	if m == nil {
 		return nil
 	}
@@ -1015,9 +1102,9 @@ func (m *CancleOrderRequest) Validate() error {
 	return nil
 }
 
-// CancleOrderRequestValidationError is the validation error returned by
-// CancleOrderRequest.Validate if the designated constraints aren't met.
-type CancleOrderRequestValidationError struct {
+// CancelOrderRequestValidationError is the validation error returned by
+// CancelOrderRequest.Validate if the designated constraints aren't met.
+type CancelOrderRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1025,24 +1112,24 @@ type CancleOrderRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e CancleOrderRequestValidationError) Field() string { return e.field }
+func (e CancelOrderRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e CancleOrderRequestValidationError) Reason() string { return e.reason }
+func (e CancelOrderRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e CancleOrderRequestValidationError) Cause() error { return e.cause }
+func (e CancelOrderRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e CancleOrderRequestValidationError) Key() bool { return e.key }
+func (e CancelOrderRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e CancleOrderRequestValidationError) ErrorName() string {
-	return "CancleOrderRequestValidationError"
+func (e CancelOrderRequestValidationError) ErrorName() string {
+	return "CancelOrderRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e CancleOrderRequestValidationError) Error() string {
+func (e CancelOrderRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1054,14 +1141,14 @@ func (e CancleOrderRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sCancleOrderRequest.%s: %s%s",
+		"invalid %sCancelOrderRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = CancleOrderRequestValidationError{}
+var _ error = CancelOrderRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -1069,12 +1156,12 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = CancleOrderRequestValidationError{}
+} = CancelOrderRequestValidationError{}
 
-// Validate checks the field values on CancleOrderReply with the rules defined
+// Validate checks the field values on CancelOrderReply with the rules defined
 // in the proto definition for this message. If any rules are violated, an
 // error is returned.
-func (m *CancleOrderReply) Validate() error {
+func (m *CancelOrderReply) Validate() error {
 	if m == nil {
 		return nil
 	}
@@ -1082,9 +1169,9 @@ func (m *CancleOrderReply) Validate() error {
 	return nil
 }
 
-// CancleOrderReplyValidationError is the validation error returned by
-// CancleOrderReply.Validate if the designated constraints aren't met.
-type CancleOrderReplyValidationError struct {
+// CancelOrderReplyValidationError is the validation error returned by
+// CancelOrderReply.Validate if the designated constraints aren't met.
+type CancelOrderReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1092,22 +1179,22 @@ type CancleOrderReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e CancleOrderReplyValidationError) Field() string { return e.field }
+func (e CancelOrderReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e CancleOrderReplyValidationError) Reason() string { return e.reason }
+func (e CancelOrderReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e CancleOrderReplyValidationError) Cause() error { return e.cause }
+func (e CancelOrderReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e CancleOrderReplyValidationError) Key() bool { return e.key }
+func (e CancelOrderReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e CancleOrderReplyValidationError) ErrorName() string { return "CancleOrderReplyValidationError" }
+func (e CancelOrderReplyValidationError) ErrorName() string { return "CancelOrderReplyValidationError" }
 
 // Error satisfies the builtin error interface
-func (e CancleOrderReplyValidationError) Error() string {
+func (e CancelOrderReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1119,14 +1206,14 @@ func (e CancleOrderReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sCancleOrderReply.%s: %s%s",
+		"invalid %sCancelOrderReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = CancleOrderReplyValidationError{}
+var _ error = CancelOrderReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -1134,4 +1221,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = CancleOrderReplyValidationError{}
+} = CancelOrderReplyValidationError{}

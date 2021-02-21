@@ -28,6 +28,77 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+type Account struct {
+	Code                 string   `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Balance              float64  `protobuf:"fixed64,2,opt,name=balance,proto3" json:"balance,omitempty"`
+	AvgByPrice           float64  `protobuf:"fixed64,3,opt,name=avgByPrice,proto3" json:"avgByPrice,omitempty"`
+	TotalPrice           float64  `protobuf:"fixed64,4,opt,name=totalPrice,proto3" json:"totalPrice,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Account) Reset()         { *m = Account{} }
+func (m *Account) String() string { return proto.CompactTextString(m) }
+func (*Account) ProtoMessage()    {}
+func (*Account) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e6b29708bd139bde, []int{0}
+}
+func (m *Account) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Account) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Account.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Account) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Account.Merge(m, src)
+}
+func (m *Account) XXX_Size() int {
+	return m.Size()
+}
+func (m *Account) XXX_DiscardUnknown() {
+	xxx_messageInfo_Account.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Account proto.InternalMessageInfo
+
+func (m *Account) GetCode() string {
+	if m != nil {
+		return m.Code
+	}
+	return ""
+}
+
+func (m *Account) GetBalance() float64 {
+	if m != nil {
+		return m.Balance
+	}
+	return 0
+}
+
+func (m *Account) GetAvgByPrice() float64 {
+	if m != nil {
+		return m.AvgByPrice
+	}
+	return 0
+}
+
+func (m *Account) GetTotalPrice() float64 {
+	if m != nil {
+		return m.TotalPrice
+	}
+	return 0
+}
+
 type AccountRequest struct {
 	Account              string   `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -39,7 +110,7 @@ func (m *AccountRequest) Reset()         { *m = AccountRequest{} }
 func (m *AccountRequest) String() string { return proto.CompactTextString(m) }
 func (*AccountRequest) ProtoMessage()    {}
 func (*AccountRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{0}
+	return fileDescriptor_e6b29708bd139bde, []int{1}
 }
 func (m *AccountRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -86,7 +157,7 @@ func (m *AccountReply) Reset()         { *m = AccountReply{} }
 func (m *AccountReply) String() string { return proto.CompactTextString(m) }
 func (*AccountReply) ProtoMessage()    {}
 func (*AccountReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{1}
+	return fileDescriptor_e6b29708bd139bde, []int{2}
 }
 func (m *AccountReply) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -133,7 +204,7 @@ func (m *TickRequest) Reset()         { *m = TickRequest{} }
 func (m *TickRequest) String() string { return proto.CompactTextString(m) }
 func (*TickRequest) ProtoMessage()    {}
 func (*TickRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{2}
+	return fileDescriptor_e6b29708bd139bde, []int{3}
 }
 func (m *TickRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -182,7 +253,7 @@ func (m *TickReply) Reset()         { *m = TickReply{} }
 func (m *TickReply) String() string { return proto.CompactTextString(m) }
 func (*TickReply) ProtoMessage()    {}
 func (*TickReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{3}
+	return fileDescriptor_e6b29708bd139bde, []int{4}
 }
 func (m *TickReply) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -244,7 +315,7 @@ func (m *ChartRequest) Reset()         { *m = ChartRequest{} }
 func (m *ChartRequest) String() string { return proto.CompactTextString(m) }
 func (*ChartRequest) ProtoMessage()    {}
 func (*ChartRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{4}
+	return fileDescriptor_e6b29708bd139bde, []int{5}
 }
 func (m *ChartRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -298,7 +369,7 @@ func (m *ChartReply) Reset()         { *m = ChartReply{} }
 func (m *ChartReply) String() string { return proto.CompactTextString(m) }
 func (*ChartReply) ProtoMessage()    {}
 func (*ChartReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{5}
+	return fileDescriptor_e6b29708bd139bde, []int{6}
 }
 func (m *ChartReply) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -335,16 +406,17 @@ func (m *ChartReply) GetData() []*ChartData {
 }
 
 type AccountsReply struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Accounts             []*Account `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
+	XXX_unrecognized     []byte     `json:"-"`
+	XXX_sizecache        int32      `json:"-"`
 }
 
 func (m *AccountsReply) Reset()         { *m = AccountsReply{} }
 func (m *AccountsReply) String() string { return proto.CompactTextString(m) }
 func (*AccountsReply) ProtoMessage()    {}
 func (*AccountsReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{6}
+	return fileDescriptor_e6b29708bd139bde, []int{7}
 }
 func (m *AccountsReply) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -373,6 +445,13 @@ func (m *AccountsReply) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_AccountsReply proto.InternalMessageInfo
 
+func (m *AccountsReply) GetAccounts() []*Account {
+	if m != nil {
+		return m.Accounts
+	}
+	return nil
+}
+
 type BuyRequest struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -383,7 +462,7 @@ func (m *BuyRequest) Reset()         { *m = BuyRequest{} }
 func (m *BuyRequest) String() string { return proto.CompactTextString(m) }
 func (*BuyRequest) ProtoMessage()    {}
 func (*BuyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{7}
+	return fileDescriptor_e6b29708bd139bde, []int{8}
 }
 func (m *BuyRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -422,7 +501,7 @@ func (m *BuyReply) Reset()         { *m = BuyReply{} }
 func (m *BuyReply) String() string { return proto.CompactTextString(m) }
 func (*BuyReply) ProtoMessage()    {}
 func (*BuyReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{8}
+	return fileDescriptor_e6b29708bd139bde, []int{9}
 }
 func (m *BuyReply) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -461,7 +540,7 @@ func (m *SellRequest) Reset()         { *m = SellRequest{} }
 func (m *SellRequest) String() string { return proto.CompactTextString(m) }
 func (*SellRequest) ProtoMessage()    {}
 func (*SellRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{9}
+	return fileDescriptor_e6b29708bd139bde, []int{10}
 }
 func (m *SellRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -500,7 +579,7 @@ func (m *SellReply) Reset()         { *m = SellReply{} }
 func (m *SellReply) String() string { return proto.CompactTextString(m) }
 func (*SellReply) ProtoMessage()    {}
 func (*SellReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{10}
+	return fileDescriptor_e6b29708bd139bde, []int{11}
 }
 func (m *SellReply) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -545,7 +624,7 @@ func (m *ChartData) Reset()         { *m = ChartData{} }
 func (m *ChartData) String() string { return proto.CompactTextString(m) }
 func (*ChartData) ProtoMessage()    {}
 func (*ChartData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{11}
+	return fileDescriptor_e6b29708bd139bde, []int{12}
 }
 func (m *ChartData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -626,7 +705,7 @@ func (m *OrderListRequest) Reset()         { *m = OrderListRequest{} }
 func (m *OrderListRequest) String() string { return proto.CompactTextString(m) }
 func (*OrderListRequest) ProtoMessage()    {}
 func (*OrderListRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{12}
+	return fileDescriptor_e6b29708bd139bde, []int{13}
 }
 func (m *OrderListRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -665,7 +744,7 @@ func (m *OrderListReply) Reset()         { *m = OrderListReply{} }
 func (m *OrderListReply) String() string { return proto.CompactTextString(m) }
 func (*OrderListReply) ProtoMessage()    {}
 func (*OrderListReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{13}
+	return fileDescriptor_e6b29708bd139bde, []int{14}
 }
 func (m *OrderListReply) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -694,63 +773,24 @@ func (m *OrderListReply) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_OrderListReply proto.InternalMessageInfo
 
-type CancleOrderRequest struct {
+type CancelOrderRequest struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CancleOrderRequest) Reset()         { *m = CancleOrderRequest{} }
-func (m *CancleOrderRequest) String() string { return proto.CompactTextString(m) }
-func (*CancleOrderRequest) ProtoMessage()    {}
-func (*CancleOrderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e6b29708bd139bde, []int{14}
-}
-func (m *CancleOrderRequest) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *CancleOrderRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_CancleOrderRequest.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *CancleOrderRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CancleOrderRequest.Merge(m, src)
-}
-func (m *CancleOrderRequest) XXX_Size() int {
-	return m.Size()
-}
-func (m *CancleOrderRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_CancleOrderRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_CancleOrderRequest proto.InternalMessageInfo
-
-type CancleOrderReply struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *CancleOrderReply) Reset()         { *m = CancleOrderReply{} }
-func (m *CancleOrderReply) String() string { return proto.CompactTextString(m) }
-func (*CancleOrderReply) ProtoMessage()    {}
-func (*CancleOrderReply) Descriptor() ([]byte, []int) {
+func (m *CancelOrderRequest) Reset()         { *m = CancelOrderRequest{} }
+func (m *CancelOrderRequest) String() string { return proto.CompactTextString(m) }
+func (*CancelOrderRequest) ProtoMessage()    {}
+func (*CancelOrderRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e6b29708bd139bde, []int{15}
 }
-func (m *CancleOrderReply) XXX_Unmarshal(b []byte) error {
+func (m *CancelOrderRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *CancleOrderReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CancelOrderRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_CancleOrderReply.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CancelOrderRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -760,19 +800,59 @@ func (m *CancleOrderReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return b[:n], nil
 	}
 }
-func (m *CancleOrderReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CancleOrderReply.Merge(m, src)
+func (m *CancelOrderRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CancelOrderRequest.Merge(m, src)
 }
-func (m *CancleOrderReply) XXX_Size() int {
+func (m *CancelOrderRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *CancleOrderReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_CancleOrderReply.DiscardUnknown(m)
+func (m *CancelOrderRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CancelOrderRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CancleOrderReply proto.InternalMessageInfo
+var xxx_messageInfo_CancelOrderRequest proto.InternalMessageInfo
+
+type CancelOrderReply struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CancelOrderReply) Reset()         { *m = CancelOrderReply{} }
+func (m *CancelOrderReply) String() string { return proto.CompactTextString(m) }
+func (*CancelOrderReply) ProtoMessage()    {}
+func (*CancelOrderReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e6b29708bd139bde, []int{16}
+}
+func (m *CancelOrderReply) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CancelOrderReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CancelOrderReply.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CancelOrderReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CancelOrderReply.Merge(m, src)
+}
+func (m *CancelOrderReply) XXX_Size() int {
+	return m.Size()
+}
+func (m *CancelOrderReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_CancelOrderReply.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CancelOrderReply proto.InternalMessageInfo
 
 func init() {
+	proto.RegisterType((*Account)(nil), "stock.Account")
 	proto.RegisterType((*AccountRequest)(nil), "stock.AccountRequest")
 	proto.RegisterType((*AccountReply)(nil), "stock.AccountReply")
 	proto.RegisterType((*TickRequest)(nil), "stock.TickRequest")
@@ -787,50 +867,53 @@ func init() {
 	proto.RegisterType((*ChartData)(nil), "stock.ChartData")
 	proto.RegisterType((*OrderListRequest)(nil), "stock.OrderListRequest")
 	proto.RegisterType((*OrderListReply)(nil), "stock.OrderListReply")
-	proto.RegisterType((*CancleOrderRequest)(nil), "stock.CancleOrderRequest")
-	proto.RegisterType((*CancleOrderReply)(nil), "stock.CancleOrderReply")
+	proto.RegisterType((*CancelOrderRequest)(nil), "stock.CancelOrderRequest")
+	proto.RegisterType((*CancelOrderReply)(nil), "stock.CancelOrderReply")
 }
 
 func init() { proto.RegisterFile("stock/stock.proto", fileDescriptor_e6b29708bd139bde) }
 
 var fileDescriptor_e6b29708bd139bde = []byte{
-	// 566 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x53, 0xcd, 0x6e, 0xda, 0x40,
-	0x10, 0x8e, 0xc1, 0x26, 0x61, 0x4c, 0x12, 0x67, 0x42, 0x12, 0xd7, 0x95, 0x28, 0xda, 0xf6, 0x80,
-	0x52, 0xc9, 0xa4, 0xf4, 0x50, 0xa9, 0x52, 0x0f, 0x85, 0xf6, 0x56, 0xb5, 0x12, 0xc9, 0x0b, 0x38,
-	0x66, 0x03, 0x56, 0x0c, 0xeb, 0xe2, 0x75, 0x2b, 0x9e, 0xa7, 0x6f, 0xd2, 0x53, 0x8f, 0x7d, 0x84,
-	0x8a, 0x27, 0xa9, 0xf6, 0xcf, 0x31, 0x90, 0x43, 0x2e, 0x68, 0xe6, 0x9b, 0x6f, 0xc7, 0xf3, 0x7d,
-	0x33, 0xc0, 0x49, 0xce, 0x59, 0x7c, 0xdf, 0x97, 0xbf, 0x61, 0xb6, 0x64, 0x9c, 0xa1, 0x23, 0x93,
-	0xe0, 0xf9, 0x94, 0xb1, 0x69, 0x4a, 0xfb, 0x12, 0xbc, 0x2d, 0xee, 0xfa, 0x74, 0x9e, 0xf1, 0x95,
-	0xe2, 0x04, 0x2f, 0xb6, 0x8b, 0x3c, 0x99, 0xd3, 0x9c, 0x47, 0xf3, 0x4c, 0x11, 0xc8, 0x25, 0x1c,
-	0x7d, 0x8c, 0x63, 0x56, 0x2c, 0xf8, 0x98, 0x7e, 0x2f, 0x68, 0xce, 0xd1, 0x87, 0xfd, 0x48, 0x21,
-	0xbe, 0xd5, 0xb5, 0x7a, 0xcd, 0xb1, 0x49, 0x09, 0x81, 0x56, 0xc9, 0xcd, 0xd2, 0x15, 0x22, 0xd8,
-	0xc9, 0xe2, 0x8e, 0x69, 0x9a, 0x8c, 0xc9, 0x4b, 0x70, 0x6f, 0x92, 0xf8, 0xde, 0x34, 0x6b, 0x83,
-	0x13, 0xb3, 0x09, 0xcd, 0x35, 0x47, 0x25, 0x24, 0x81, 0xa6, 0x22, 0x89, 0x2e, 0x6d, 0x70, 0xb2,
-	0x65, 0x12, 0x53, 0x49, 0xb1, 0xc6, 0x2a, 0xc1, 0x10, 0xec, 0x49, 0xc4, 0xa9, 0x5f, 0xeb, 0x5a,
-	0x3d, 0x77, 0x10, 0x84, 0x4a, 0x47, 0x68, 0x74, 0x84, 0x37, 0x46, 0xc7, 0x58, 0xf2, 0xf0, 0x1c,
-	0x1a, 0x3f, 0x58, 0x5a, 0xcc, 0xa9, 0x5f, 0x97, 0x6d, 0x74, 0x46, 0xbe, 0x42, 0x6b, 0x34, 0x8b,
-	0x96, 0xa5, 0x3a, 0x04, 0x5b, 0xcc, 0x60, 0x66, 0x16, 0x31, 0x5e, 0x42, 0x8d, 0xb3, 0x27, 0x7c,
-	0xa9, 0xc6, 0x19, 0x19, 0x00, 0xe8, 0x7e, 0x62, 0xf6, 0x57, 0x72, 0xca, 0xc8, 0xb7, 0xba, 0xf5,
-	0x9e, 0x3b, 0xf0, 0x42, 0xb5, 0x1e, 0x49, 0xf8, 0x14, 0xf1, 0x48, 0xce, 0x16, 0x91, 0x63, 0x38,
-	0xd4, 0xbe, 0xe5, 0xf2, 0x19, 0x69, 0x01, 0x0c, 0x8b, 0x95, 0x1e, 0x89, 0x00, 0x1c, 0xc8, 0x4c,
-	0x54, 0x0e, 0xc1, 0xbd, 0xa6, 0x69, 0x6a, 0x4a, 0x2e, 0x34, 0x55, 0x2a, 0x6a, 0xbf, 0x2c, 0x68,
-	0x96, 0xad, 0x85, 0x10, 0x96, 0xd1, 0x85, 0x76, 0x4d, 0xc6, 0x02, 0x9b, 0x25, 0xd3, 0x99, 0x94,
-	0x62, 0x8d, 0x65, 0x8c, 0x1e, 0xd4, 0x53, 0xf6, 0x53, 0xbb, 0x22, 0x42, 0xb9, 0x93, 0x94, 0xe5,
-	0xd4, 0xb7, 0x95, 0xe1, 0x32, 0xa9, 0x18, 0xe8, 0x54, 0x0d, 0x2c, 0x17, 0xd1, 0x78, 0xda, 0x22,
-	0x08, 0x82, 0xf7, 0x6d, 0x39, 0xa1, 0xcb, 0x2f, 0x49, 0x6e, 0x4c, 0x27, 0x1e, 0x1c, 0x55, 0x30,
-	0xa1, 0xa5, 0x0d, 0x38, 0x8a, 0x16, 0x71, 0x4a, 0x25, 0x6e, 0x78, 0x08, 0xde, 0x06, 0x9a, 0xa5,
-	0xab, 0xc1, 0xef, 0x3a, 0x38, 0xd7, 0xc2, 0x56, 0x7c, 0x07, 0xfb, 0xda, 0x46, 0x3c, 0xd3, 0x4e,
-	0x6f, 0x9e, 0x6e, 0x70, 0xba, 0x0d, 0x8b, 0x4f, 0xed, 0xe1, 0x15, 0xd8, 0xe2, 0xdc, 0x10, 0x75,
-	0xb9, 0x72, 0xa0, 0x81, 0xb7, 0x81, 0x49, 0xfe, 0x95, 0x85, 0x6f, 0xc0, 0x91, 0x4e, 0xe3, 0x69,
-	0x75, 0xa5, 0xe6, 0xcd, 0xc9, 0x26, 0xa8, 0x3e, 0xf2, 0x1e, 0x0e, 0xcc, 0x92, 0xf1, 0x7c, 0xc7,
-	0xa5, 0xcf, 0xe2, 0x3f, 0x19, 0xb4, 0x37, 0xe7, 0xcb, 0xcd, 0xdb, 0xd7, 0x50, 0x1f, 0x16, 0x2b,
-	0x34, 0x7d, 0x1f, 0x6e, 0x23, 0x38, 0xae, 0x42, 0x8a, 0x1c, 0x82, 0x2d, 0x6e, 0xa2, 0x54, 0x53,
-	0xb9, 0x97, 0x52, 0xcd, 0xc3, 0xd1, 0xec, 0xe1, 0x07, 0x68, 0x96, 0xe6, 0xe3, 0x85, 0x26, 0x6c,
-	0xaf, 0x28, 0x38, 0xdb, 0x2d, 0xa8, 0xe7, 0x23, 0x70, 0x2b, 0x3b, 0xc1, 0x67, 0x46, 0xfb, 0xce,
-	0xf6, 0x82, 0x8b, 0xc7, 0x4a, 0xb2, 0xc9, 0xb0, 0xf5, 0x67, 0xdd, 0xb1, 0xfe, 0xae, 0x3b, 0xd6,
-	0xbf, 0x75, 0xc7, 0xba, 0x6d, 0x48, 0x5b, 0xde, 0xfe, 0x0f, 0x00, 0x00, 0xff, 0xff, 0x33, 0xa1,
-	0x20, 0xdd, 0xd4, 0x04, 0x00, 0x00,
+	// 618 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x54, 0xcf, 0x6e, 0xda, 0x4e,
+	0x10, 0x8e, 0x01, 0x13, 0x18, 0x13, 0x7e, 0xce, 0x86, 0x24, 0xfc, 0x5c, 0x89, 0xa2, 0x6d, 0x0f,
+	0x88, 0x4a, 0x26, 0xa5, 0x87, 0x4a, 0xad, 0x7a, 0x28, 0xb4, 0xb7, 0xaa, 0xad, 0x48, 0x5e, 0x60,
+	0x31, 0x0e, 0x58, 0x59, 0x58, 0x17, 0xaf, 0x13, 0xf9, 0x79, 0xfa, 0x26, 0x3d, 0xf5, 0xd8, 0x47,
+	0xa8, 0x78, 0x92, 0x6a, 0xff, 0x19, 0x03, 0x39, 0xe4, 0x82, 0x76, 0xbe, 0x99, 0xd9, 0xfd, 0xe6,
+	0x9b, 0x0f, 0xc3, 0x69, 0xc2, 0x59, 0x70, 0x37, 0x90, 0xbf, 0x7e, 0xbc, 0x66, 0x9c, 0x21, 0x5b,
+	0x06, 0xde, 0xb3, 0x39, 0x63, 0x73, 0x1a, 0x0e, 0x24, 0x38, 0x4d, 0x6f, 0x07, 0xe1, 0x32, 0xe6,
+	0x99, 0xaa, 0xf1, 0x9e, 0xef, 0x27, 0x79, 0xb4, 0x0c, 0x13, 0x4e, 0x96, 0xb1, 0x2a, 0xc0, 0x0f,
+	0x70, 0xfc, 0x31, 0x08, 0x58, 0xba, 0xe2, 0x08, 0x41, 0x25, 0x60, 0xb3, 0xb0, 0x6d, 0x75, 0xad,
+	0x5e, 0x7d, 0x22, 0xcf, 0xa8, 0x0d, 0xc7, 0x53, 0x42, 0xc9, 0x2a, 0x08, 0xdb, 0xa5, 0xae, 0xd5,
+	0xb3, 0x26, 0x26, 0x44, 0x1d, 0x00, 0x72, 0x3f, 0x1f, 0x65, 0xdf, 0xd7, 0x51, 0x10, 0xb6, 0xcb,
+	0x32, 0x59, 0x40, 0x44, 0x9e, 0x33, 0x4e, 0xa8, 0xca, 0x57, 0x54, 0x7e, 0x8b, 0xe0, 0x3e, 0x34,
+	0xf5, 0xc3, 0x93, 0xf0, 0x47, 0x1a, 0x26, 0x5c, 0xbc, 0x45, 0x14, 0xa2, 0x29, 0x98, 0x10, 0x63,
+	0x68, 0xe4, 0xb5, 0x31, 0xcd, 0x04, 0xd3, 0x68, 0x75, 0xcb, 0x0c, 0x53, 0x71, 0xc6, 0x2f, 0xc0,
+	0xb9, 0x89, 0x82, 0x3b, 0x73, 0x59, 0x0b, 0x6c, 0x31, 0x40, 0xa2, 0x6b, 0x54, 0x80, 0x23, 0xa8,
+	0xab, 0x22, 0x71, 0x4b, 0x0b, 0xec, 0x58, 0x92, 0xb3, 0x24, 0x39, 0x15, 0x20, 0x1f, 0x2a, 0x33,
+	0xc2, 0xd5, 0xb8, 0xce, 0xd0, 0xf3, 0x95, 0x80, 0xbe, 0x11, 0xd0, 0xbf, 0x31, 0x02, 0x4e, 0x64,
+	0x1d, 0xba, 0x80, 0xea, 0x3d, 0xa3, 0xe9, 0xd2, 0x68, 0xa0, 0x23, 0xfc, 0x15, 0x1a, 0xe3, 0x05,
+	0x59, 0xe7, 0xd3, 0x3d, 0xa6, 0x6e, 0x1f, 0x4a, 0x9c, 0x3d, 0xe1, 0xa5, 0x12, 0x67, 0x78, 0x08,
+	0xa0, 0xef, 0x13, 0xdc, 0x5f, 0x4a, 0x96, 0xa4, 0x6d, 0x75, 0xcb, 0x3d, 0x67, 0xe8, 0xfa, 0xca,
+	0x17, 0xb2, 0xe0, 0x13, 0xe1, 0x44, 0x72, 0x23, 0xf8, 0x3d, 0x9c, 0x68, 0xdd, 0x12, 0xd5, 0xd6,
+	0x87, 0x9a, 0xd6, 0x34, 0xd1, 0xad, 0x4d, 0xdd, 0x6a, 0xf4, 0xcd, 0xf3, 0xb8, 0x01, 0x30, 0x4a,
+	0x33, 0x4d, 0x1f, 0x03, 0xd4, 0x64, 0x14, 0xd3, 0x0c, 0x9f, 0x80, 0x73, 0x1d, 0x52, 0x6a, 0x52,
+	0x0e, 0xd4, 0x55, 0x28, 0x72, 0x3f, 0x2d, 0xa8, 0xe7, 0x34, 0xc4, 0xd0, 0x2c, 0x0e, 0x57, 0x5a,
+	0x61, 0x79, 0x16, 0xd8, 0x22, 0x9a, 0x2f, 0xb4, 0x9f, 0xe4, 0x19, 0xb9, 0x50, 0xa6, 0xec, 0x41,
+	0x2b, 0x28, 0x8e, 0x72, 0x7f, 0x94, 0x25, 0xc6, 0x39, 0x2a, 0x28, 0x88, 0x6d, 0x17, 0xc5, 0xce,
+	0x97, 0x56, 0x7d, 0xda, 0xd2, 0x30, 0x02, 0xf7, 0xdb, 0x7a, 0x16, 0xae, 0xbf, 0x44, 0x89, 0x59,
+	0x10, 0x76, 0xa1, 0x59, 0xc0, 0xc4, 0x2c, 0x2d, 0x40, 0x63, 0xe1, 0x75, 0x2a, 0x71, 0x53, 0x87,
+	0xc0, 0xdd, 0x41, 0x63, 0x9a, 0x0d, 0x7f, 0x95, 0xc1, 0xbe, 0x16, 0x3a, 0xa2, 0xb7, 0xdb, 0xff,
+	0xd3, 0xf9, 0x9e, 0xb4, 0xaa, 0xdf, 0x3b, 0xdb, 0x87, 0xc5, 0x53, 0x47, 0xe8, 0x0a, 0x2a, 0xc2,
+	0x9a, 0x08, 0xe9, 0x74, 0xc1, 0xcc, 0x9e, 0xbb, 0x83, 0xc9, 0xfa, 0x2b, 0x0b, 0xbd, 0x06, 0x5b,
+	0x2a, 0x8d, 0xce, 0x8a, 0xeb, 0x37, 0x3d, 0xa7, 0xbb, 0xa0, 0x7a, 0xe4, 0x1d, 0xd4, 0x8c, 0x21,
+	0xd0, 0xc5, 0x81, 0x4a, 0x9f, 0xc5, 0x87, 0xc3, 0x6b, 0xed, 0xf2, 0x4b, 0x4c, 0xef, 0x2b, 0x28,
+	0x8f, 0xd2, 0x0c, 0x99, 0x7b, 0xb7, 0xde, 0xf0, 0xfe, 0x2b, 0x42, 0xaa, 0xd8, 0x87, 0x8a, 0xf0,
+	0x44, 0x3e, 0x4d, 0xc1, 0x2f, 0xf9, 0x34, 0x5b, 0xd3, 0x1c, 0xa1, 0x0f, 0x50, 0xcf, 0xc5, 0x47,
+	0x97, 0xba, 0x60, 0x7f, 0x45, 0xde, 0xf9, 0x61, 0x42, 0xb5, 0x8f, 0xc1, 0x29, 0xec, 0x04, 0xfd,
+	0x6f, 0x66, 0x3f, 0xd8, 0x9e, 0x77, 0xf9, 0x58, 0x4a, 0x5e, 0x32, 0x6a, 0xfc, 0xde, 0x74, 0xac,
+	0x3f, 0x9b, 0x8e, 0xf5, 0x77, 0xd3, 0xb1, 0xa6, 0x55, 0x29, 0xcb, 0x9b, 0x7f, 0x01, 0x00, 0x00,
+	0xff, 0xff, 0x4b, 0xc4, 0x7c, 0x3a, 0x79, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -845,14 +928,16 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type StockClient interface {
+	//특정 소유하고 있는 주식,코인 정보
 	Account(ctx context.Context, in *AccountRequest, opts ...grpc.CallOption) (*AccountReply, error)
 	Tick(ctx context.Context, in *TickRequest, opts ...grpc.CallOption) (Stock_TickClient, error)
 	Chart(ctx context.Context, in *ChartRequest, opts ...grpc.CallOption) (*ChartReply, error)
+	//모든 소유하고 있는 주식, 코인정보
 	Accounts(ctx context.Context, in *types.Empty, opts ...grpc.CallOption) (*AccountsReply, error)
 	Buy(ctx context.Context, in *BuyRequest, opts ...grpc.CallOption) (*BuyReply, error)
 	Sell(ctx context.Context, in *SellRequest, opts ...grpc.CallOption) (*SellReply, error)
 	OrderList(ctx context.Context, in *OrderListRequest, opts ...grpc.CallOption) (*OrderListReply, error)
-	CancleOrder(ctx context.Context, in *CancleOrderRequest, opts ...grpc.CallOption) (*CancleOrderReply, error)
+	CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*CancelOrderReply, error)
 }
 
 type stockClient struct {
@@ -949,9 +1034,9 @@ func (c *stockClient) OrderList(ctx context.Context, in *OrderListRequest, opts 
 	return out, nil
 }
 
-func (c *stockClient) CancleOrder(ctx context.Context, in *CancleOrderRequest, opts ...grpc.CallOption) (*CancleOrderReply, error) {
-	out := new(CancleOrderReply)
-	err := c.cc.Invoke(ctx, "/stock.Stock/CancleOrder", in, out, opts...)
+func (c *stockClient) CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*CancelOrderReply, error) {
+	out := new(CancelOrderReply)
+	err := c.cc.Invoke(ctx, "/stock.Stock/CancelOrder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -960,14 +1045,16 @@ func (c *stockClient) CancleOrder(ctx context.Context, in *CancleOrderRequest, o
 
 // StockServer is the server API for Stock service.
 type StockServer interface {
+	//특정 소유하고 있는 주식,코인 정보
 	Account(context.Context, *AccountRequest) (*AccountReply, error)
 	Tick(*TickRequest, Stock_TickServer) error
 	Chart(context.Context, *ChartRequest) (*ChartReply, error)
+	//모든 소유하고 있는 주식, 코인정보
 	Accounts(context.Context, *types.Empty) (*AccountsReply, error)
 	Buy(context.Context, *BuyRequest) (*BuyReply, error)
 	Sell(context.Context, *SellRequest) (*SellReply, error)
 	OrderList(context.Context, *OrderListRequest) (*OrderListReply, error)
-	CancleOrder(context.Context, *CancleOrderRequest) (*CancleOrderReply, error)
+	CancelOrder(context.Context, *CancelOrderRequest) (*CancelOrderReply, error)
 }
 
 // UnimplementedStockServer can be embedded to have forward compatible implementations.
@@ -995,8 +1082,8 @@ func (*UnimplementedStockServer) Sell(ctx context.Context, req *SellRequest) (*S
 func (*UnimplementedStockServer) OrderList(ctx context.Context, req *OrderListRequest) (*OrderListReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OrderList not implemented")
 }
-func (*UnimplementedStockServer) CancleOrder(ctx context.Context, req *CancleOrderRequest) (*CancleOrderReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CancleOrder not implemented")
+func (*UnimplementedStockServer) CancelOrder(ctx context.Context, req *CancelOrderRequest) (*CancelOrderReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelOrder not implemented")
 }
 
 func RegisterStockServer(s *grpc.Server, srv StockServer) {
@@ -1132,20 +1219,20 @@ func _Stock_OrderList_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Stock_CancleOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CancleOrderRequest)
+func _Stock_CancelOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelOrderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StockServer).CancleOrder(ctx, in)
+		return srv.(StockServer).CancelOrder(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/stock.Stock/CancleOrder",
+		FullMethod: "/stock.Stock/CancelOrder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StockServer).CancleOrder(ctx, req.(*CancleOrderRequest))
+		return srv.(StockServer).CancelOrder(ctx, req.(*CancelOrderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1179,8 +1266,8 @@ var _Stock_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Stock_OrderList_Handler,
 		},
 		{
-			MethodName: "CancleOrder",
-			Handler:    _Stock_CancleOrder_Handler,
+			MethodName: "CancelOrder",
+			Handler:    _Stock_CancelOrder_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
@@ -1191,6 +1278,58 @@ var _Stock_serviceDesc = grpc.ServiceDesc{
 		},
 	},
 	Metadata: "stock/stock.proto",
+}
+
+func (m *Account) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Account) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Account) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.TotalPrice != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.TotalPrice))))
+		i--
+		dAtA[i] = 0x21
+	}
+	if m.AvgByPrice != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.AvgByPrice))))
+		i--
+		dAtA[i] = 0x19
+	}
+	if m.Balance != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Balance))))
+		i--
+		dAtA[i] = 0x11
+	}
+	if len(m.Code) > 0 {
+		i -= len(m.Code)
+		copy(dAtA[i:], m.Code)
+		i = encodeVarintStock(dAtA, i, uint64(len(m.Code)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
 }
 
 func (m *AccountRequest) Marshal() (dAtA []byte, err error) {
@@ -1457,6 +1596,20 @@ func (m *AccountsReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
+	if len(m.Accounts) > 0 {
+		for iNdEx := len(m.Accounts) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Accounts[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintStock(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -1691,7 +1844,7 @@ func (m *OrderListReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *CancleOrderRequest) Marshal() (dAtA []byte, err error) {
+func (m *CancelOrderRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1701,12 +1854,12 @@ func (m *CancleOrderRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *CancleOrderRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *CancelOrderRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *CancleOrderRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CancelOrderRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1718,7 +1871,7 @@ func (m *CancleOrderRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *CancleOrderReply) Marshal() (dAtA []byte, err error) {
+func (m *CancelOrderReply) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1728,12 +1881,12 @@ func (m *CancleOrderReply) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *CancleOrderReply) MarshalTo(dAtA []byte) (int, error) {
+func (m *CancelOrderReply) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *CancleOrderReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CancelOrderReply) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1756,6 +1909,31 @@ func encodeVarintStock(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
+func (m *Account) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Code)
+	if l > 0 {
+		n += 1 + l + sovStock(uint64(l))
+	}
+	if m.Balance != 0 {
+		n += 9
+	}
+	if m.AvgByPrice != 0 {
+		n += 9
+	}
+	if m.TotalPrice != 0 {
+		n += 9
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
 func (m *AccountRequest) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1870,6 +2048,12 @@ func (m *AccountsReply) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if len(m.Accounts) > 0 {
+		for _, e := range m.Accounts {
+			l = e.Size()
+			n += 1 + l + sovStock(uint64(l))
+		}
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -1979,7 +2163,7 @@ func (m *OrderListReply) Size() (n int) {
 	return n
 }
 
-func (m *CancleOrderRequest) Size() (n int) {
+func (m *CancelOrderRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1991,7 +2175,7 @@ func (m *CancleOrderRequest) Size() (n int) {
 	return n
 }
 
-func (m *CancleOrderReply) Size() (n int) {
+func (m *CancelOrderReply) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2008,6 +2192,122 @@ func sovStock(x uint64) (n int) {
 }
 func sozStock(x uint64) (n int) {
 	return sovStock(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *Account) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowStock
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Account: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Account: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Code", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowStock
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthStock
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthStock
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Code = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Balance", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Balance = float64(math.Float64frombits(v))
+		case 3:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AvgByPrice", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.AvgByPrice = float64(math.Float64frombits(v))
+		case 4:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TotalPrice", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.TotalPrice = float64(math.Float64frombits(v))
+		default:
+			iNdEx = preIndex
+			skippy, err := skipStock(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthStock
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *AccountRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
@@ -2600,6 +2900,40 @@ func (m *AccountsReply) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: AccountsReply: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Accounts", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowStock
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthStock
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthStock
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Accounts = append(m.Accounts, &Account{})
+			if err := m.Accounts[len(m.Accounts)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipStock(dAtA[iNdEx:])
@@ -3070,7 +3404,7 @@ func (m *OrderListReply) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *CancleOrderRequest) Unmarshal(dAtA []byte) error {
+func (m *CancelOrderRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3093,10 +3427,10 @@ func (m *CancleOrderRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: CancleOrderRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: CancelOrderRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CancleOrderRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CancelOrderRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -3121,7 +3455,7 @@ func (m *CancleOrderRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *CancleOrderReply) Unmarshal(dAtA []byte) error {
+func (m *CancelOrderReply) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3144,10 +3478,10 @@ func (m *CancleOrderReply) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: CancleOrderReply: wiretype end group for non-group")
+			return fmt.Errorf("proto: CancelOrderReply: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CancleOrderReply: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CancelOrderReply: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
