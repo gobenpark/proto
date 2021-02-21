@@ -99,10 +99,11 @@ message ChartData {
 
 message Order {
   enum Side {
+    None = 0;
     //매도
-    Ask = 0;
+    Ask = 1;
     //매수
-    Bid = 1;
+    Bid = 2;
   }
   enum OrderType {
     //시장가
