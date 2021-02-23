@@ -17,6 +17,7 @@ service Stock {
   rpc Sell(SellRequest) returns (SellReply){}
   rpc OrderList(google.protobuf.Empty) returns (OrderListReply){}
   rpc CancelOrder(CancelOrderRequest) returns (google.protobuf.Empty){}
+  rpc OrderBookStream(OrderBookStreamRequest) returns (stream OrderBookStreamReply) {}
 }
 
 enum OrderType{
@@ -134,4 +135,12 @@ message OrderListReply {
 
 message CancelOrderRequest{
   string id = 1;
+}
+
+message OrderBookStreamRequest {
+  repeated string codes = 1;
+}
+
+message OrderBookStreamReply {
+
 }
