@@ -1261,3 +1261,137 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CancelOrderRequestValidationError{}
+
+// Validate checks the field values on OrderBookStreamRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *OrderBookStreamRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// OrderBookStreamRequestValidationError is the validation error returned by
+// OrderBookStreamRequest.Validate if the designated constraints aren't met.
+type OrderBookStreamRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e OrderBookStreamRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e OrderBookStreamRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e OrderBookStreamRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e OrderBookStreamRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e OrderBookStreamRequestValidationError) ErrorName() string {
+	return "OrderBookStreamRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e OrderBookStreamRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sOrderBookStreamRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = OrderBookStreamRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = OrderBookStreamRequestValidationError{}
+
+// Validate checks the field values on OrderBookStreamReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *OrderBookStreamReply) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// OrderBookStreamReplyValidationError is the validation error returned by
+// OrderBookStreamReply.Validate if the designated constraints aren't met.
+type OrderBookStreamReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e OrderBookStreamReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e OrderBookStreamReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e OrderBookStreamReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e OrderBookStreamReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e OrderBookStreamReplyValidationError) ErrorName() string {
+	return "OrderBookStreamReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e OrderBookStreamReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sOrderBookStreamReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = OrderBookStreamReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = OrderBookStreamReplyValidationError{}

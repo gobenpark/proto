@@ -9,7 +9,7 @@ import "google/protobuf/timestamp.proto";
 service Stock {
   //특정 소유하고 있는 주식,코인 정보
   rpc Account(AccountRequest) returns (AccountReply) {}
-  rpc Tick(TickRequest) returns (stream TickReply) {}
+  rpc TickStream(TickRequest) returns (stream TickReply) {}
   rpc Chart(ChartRequest) returns (ChartReply) {}
   //모든 소유하고 있는 주식, 코인정보
   rpc Accounts(google.protobuf.Empty) returns (AccountsReply) {}
