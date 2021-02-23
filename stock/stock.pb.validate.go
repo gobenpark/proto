@@ -1395,3 +1395,135 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = OrderBookStreamReplyValidationError{}
+
+// Validate checks the field values on TradeStreamRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *TradeStreamRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// TradeStreamRequestValidationError is the validation error returned by
+// TradeStreamRequest.Validate if the designated constraints aren't met.
+type TradeStreamRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TradeStreamRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TradeStreamRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TradeStreamRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TradeStreamRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TradeStreamRequestValidationError) ErrorName() string {
+	return "TradeStreamRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e TradeStreamRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTradeStreamRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TradeStreamRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TradeStreamRequestValidationError{}
+
+// Validate checks the field values on TradeStreamReply with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *TradeStreamReply) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// TradeStreamReplyValidationError is the validation error returned by
+// TradeStreamReply.Validate if the designated constraints aren't met.
+type TradeStreamReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TradeStreamReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TradeStreamReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TradeStreamReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TradeStreamReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TradeStreamReplyValidationError) ErrorName() string { return "TradeStreamReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e TradeStreamReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTradeStreamReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TradeStreamReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TradeStreamReplyValidationError{}

@@ -17,6 +17,7 @@ service Stock {
   rpc Sell(SellRequest) returns (SellReply){}
   rpc OrderList(google.protobuf.Empty) returns (OrderListReply){}
   rpc CancelOrder(CancelOrderRequest) returns (google.protobuf.Empty){}
+  rpc TradeStream(TradeStreamRequest) returns (stream TradeStreamReply) {}
   rpc OrderBookStream(OrderBookStreamRequest) returns (stream OrderBookStreamReply) {}
 }
 
@@ -142,5 +143,13 @@ message OrderBookStreamRequest {
 }
 
 message OrderBookStreamReply {
+
+}
+
+message TradeStreamRequest {
+  repeated string codes = 1;
+}
+
+message TradeStreamReply {
 
 }
