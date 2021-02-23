@@ -20,8 +20,8 @@ class StockStub(object):
                 request_serializer=stock_dot_stock__pb2.AccountRequest.SerializeToString,
                 response_deserializer=stock_dot_stock__pb2.AccountReply.FromString,
                 )
-        self.Tick = channel.unary_stream(
-                '/stock.Stock/Tick',
+        self.TickStream = channel.unary_stream(
+                '/stock.Stock/TickStream',
                 request_serializer=stock_dot_stock__pb2.TickRequest.SerializeToString,
                 response_deserializer=stock_dot_stock__pb2.TickReply.FromString,
                 )
@@ -45,18 +45,39 @@ class StockStub(object):
                 request_serializer=stock_dot_stock__pb2.SellRequest.SerializeToString,
                 response_deserializer=stock_dot_stock__pb2.SellReply.FromString,
                 )
+        self.OrderList = channel.unary_unary(
+                '/stock.Stock/OrderList',
+                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                response_deserializer=stock_dot_stock__pb2.OrderListReply.FromString,
+                )
+        self.CancelOrder = channel.unary_unary(
+                '/stock.Stock/CancelOrder',
+                request_serializer=stock_dot_stock__pb2.CancelOrderRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                )
+        self.TradeStream = channel.unary_stream(
+                '/stock.Stock/TradeStream',
+                request_serializer=stock_dot_stock__pb2.TradeStreamRequest.SerializeToString,
+                response_deserializer=stock_dot_stock__pb2.TradeStreamReply.FromString,
+                )
+        self.OrderBookStream = channel.unary_stream(
+                '/stock.Stock/OrderBookStream',
+                request_serializer=stock_dot_stock__pb2.OrderBookStreamRequest.SerializeToString,
+                response_deserializer=stock_dot_stock__pb2.OrderBookStreamReply.FromString,
+                )
 
 
 class StockServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def Account(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """특정 소유하고 있는 주식,코인 정보
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Tick(self, request, context):
+    def TickStream(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -69,7 +90,8 @@ class StockServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def Accounts(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """모든 소유하고 있는 주식, 코인정보
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -86,6 +108,30 @@ class StockServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def OrderList(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CancelOrder(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def TradeStream(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def OrderBookStream(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_StockServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -94,8 +140,8 @@ def add_StockServicer_to_server(servicer, server):
                     request_deserializer=stock_dot_stock__pb2.AccountRequest.FromString,
                     response_serializer=stock_dot_stock__pb2.AccountReply.SerializeToString,
             ),
-            'Tick': grpc.unary_stream_rpc_method_handler(
-                    servicer.Tick,
+            'TickStream': grpc.unary_stream_rpc_method_handler(
+                    servicer.TickStream,
                     request_deserializer=stock_dot_stock__pb2.TickRequest.FromString,
                     response_serializer=stock_dot_stock__pb2.TickReply.SerializeToString,
             ),
@@ -118,6 +164,26 @@ def add_StockServicer_to_server(servicer, server):
                     servicer.Sell,
                     request_deserializer=stock_dot_stock__pb2.SellRequest.FromString,
                     response_serializer=stock_dot_stock__pb2.SellReply.SerializeToString,
+            ),
+            'OrderList': grpc.unary_unary_rpc_method_handler(
+                    servicer.OrderList,
+                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    response_serializer=stock_dot_stock__pb2.OrderListReply.SerializeToString,
+            ),
+            'CancelOrder': grpc.unary_unary_rpc_method_handler(
+                    servicer.CancelOrder,
+                    request_deserializer=stock_dot_stock__pb2.CancelOrderRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            ),
+            'TradeStream': grpc.unary_stream_rpc_method_handler(
+                    servicer.TradeStream,
+                    request_deserializer=stock_dot_stock__pb2.TradeStreamRequest.FromString,
+                    response_serializer=stock_dot_stock__pb2.TradeStreamReply.SerializeToString,
+            ),
+            'OrderBookStream': grpc.unary_stream_rpc_method_handler(
+                    servicer.OrderBookStream,
+                    request_deserializer=stock_dot_stock__pb2.OrderBookStreamRequest.FromString,
+                    response_serializer=stock_dot_stock__pb2.OrderBookStreamReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -147,7 +213,7 @@ class Stock(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Tick(request,
+    def TickStream(request,
             target,
             options=(),
             channel_credentials=None,
@@ -157,7 +223,7 @@ class Stock(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/stock.Stock/Tick',
+        return grpc.experimental.unary_stream(request, target, '/stock.Stock/TickStream',
             stock_dot_stock__pb2.TickRequest.SerializeToString,
             stock_dot_stock__pb2.TickReply.FromString,
             options, channel_credentials,
@@ -228,5 +294,73 @@ class Stock(object):
         return grpc.experimental.unary_unary(request, target, '/stock.Stock/Sell',
             stock_dot_stock__pb2.SellRequest.SerializeToString,
             stock_dot_stock__pb2.SellReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def OrderList(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/stock.Stock/OrderList',
+            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            stock_dot_stock__pb2.OrderListReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def CancelOrder(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/stock.Stock/CancelOrder',
+            stock_dot_stock__pb2.CancelOrderRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def TradeStream(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/stock.Stock/TradeStream',
+            stock_dot_stock__pb2.TradeStreamRequest.SerializeToString,
+            stock_dot_stock__pb2.TradeStreamReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def OrderBookStream(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/stock.Stock/OrderBookStream',
+            stock_dot_stock__pb2.OrderBookStreamRequest.SerializeToString,
+            stock_dot_stock__pb2.OrderBookStreamReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
