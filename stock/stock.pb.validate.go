@@ -33,6 +33,71 @@ var (
 	_ = ptypes.DynamicAny{}
 )
 
+// Validate checks the field values on AllMarketsReply with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *AllMarketsReply) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// AllMarketsReplyValidationError is the validation error returned by
+// AllMarketsReply.Validate if the designated constraints aren't met.
+type AllMarketsReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AllMarketsReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AllMarketsReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AllMarketsReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AllMarketsReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AllMarketsReplyValidationError) ErrorName() string { return "AllMarketsReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e AllMarketsReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAllMarketsReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AllMarketsReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AllMarketsReplyValidationError{}
+
 // Validate checks the field values on Account with the rules defined in the
 // proto definition for this message. If any rules are violated, an error is returned.
 func (m *Account) Validate() error {

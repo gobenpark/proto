@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x11stock/stock.proto\x12\x05stock\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"P\n\x07\x41\x63\x63ount\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x0f\n\x07\x62\x61lance\x18\x02 \x01(\x01\x12\x12\n\navgByPrice\x18\x03 \x01(\x01\x12\x12\n\ntotalPrice\x18\x04 \x01(\x01\"!\n\x0e\x41\x63\x63ountRequest\x12\x0f\n\x07\x61\x63\x63ount\x18\x01 \x01(\t\"\x1c\n\x0c\x41\x63\x63ountReply\x12\x0c\n\x04info\x18\x01 \x01(\t\"\x1c\n\x0bTickRequest\x12\r\n\x05\x63odes\x18\x01 \x01(\t\"T\n\tTickReply\x12\r\n\x05price\x18\x01 \x01(\x01\x12(\n\x04\x64\x61te\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06volume\x18\x03 \x01(\x01\"D\n\x0c\x43hartRequest\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12&\n\x02to\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\",\n\nChartReply\x12\x1e\n\x04\x64\x61ta\x18\x01 \x03(\x0b\x32\x10.stock.ChartData\"1\n\rAccountsReply\x12 \n\x08\x61\x63\x63ounts\x18\x01 \x03(\x0b\x32\x0e.stock.Account\"Z\n\nBuyRequest\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x1f\n\x05otype\x18\x02 \x01(\x0e\x32\x10.stock.OrderType\x12\x0e\n\x06volume\x18\x03 \x01(\x01\x12\r\n\x05price\x18\x04 \x01(\x01\"\x91\x01\n\x08\x42uyReply\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x10\n\x08\x61vgPrice\x18\x03 \x01(\x01\x12\x0e\n\x06volume\x18\x04 \x01(\x01\x12\x0b\n\x03\x66\x65\x65\x18\x05 \x01(\x01\x12\r\n\x05price\x18\x06 \x01(\x01\x12-\n\tcreatedAt\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"[\n\x0bSellRequest\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x1f\n\x05otype\x18\x02 \x01(\x0e\x32\x10.stock.OrderType\x12\x0e\n\x06volume\x18\x03 \x01(\x01\x12\r\n\x05price\x18\x04 \x01(\x01\"\x92\x01\n\tSellReply\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x10\n\x08\x61vgPrice\x18\x03 \x01(\x01\x12\x0e\n\x06volume\x18\x04 \x01(\x01\x12\x0b\n\x03\x66\x65\x65\x18\x05 \x01(\x01\x12\r\n\x05price\x18\x06 \x01(\x01\x12-\n\tcreatedAt\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"}\n\tChartData\x12\x0c\n\x04open\x18\x01 \x01(\x01\x12\x0c\n\x04high\x18\x02 \x01(\x01\x12\x0b\n\x03low\x18\x03 \x01(\x01\x12\r\n\x05\x63lose\x18\x04 \x01(\x01\x12\x0e\n\x06volume\x18\x05 \x01(\x01\x12(\n\x04\x64\x61te\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xfa\x01\n\x05Order\x12\n\n\x02id\x18\x01 \x01(\t\x12\x1f\n\x04side\x18\x02 \x01(\x0e\x32\x11.stock.Order.Side\x12\x1e\n\x04type\x18\x03 \x01(\x0e\x32\x10.stock.OrderType\x12\x0c\n\x04\x63ode\x18\x04 \x01(\t\x12-\n\tcreatedAt\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0b\n\x03\x66\x65\x65\x18\x06 \x01(\x01\x12\r\n\x05state\x18\x07 \x01(\t\x12\x0e\n\x06volume\x18\x08 \x01(\x01\x12\r\n\x05price\x18\t \x01(\x01\x12\x12\n\ntradeCount\x18\n \x01(\x01\"\x18\n\x04Side\x12\x07\n\x03\x41sk\x10\x00\x12\x07\n\x03\x42id\x10\x01\"-\n\x0eOrderListReply\x12\x1b\n\x05order\x18\x01 \x03(\x0b\x32\x0c.stock.Order\" \n\x12\x43\x61ncelOrderRequest\x12\n\n\x02id\x18\x01 \x01(\t\"\'\n\x16OrderBookStreamRequest\x12\r\n\x05\x63odes\x18\x01 \x03(\t\"\x16\n\x14OrderBookStreamReply\"#\n\x12TradeStreamRequest\x12\r\n\x05\x63odes\x18\x01 \x03(\t\"y\n\x10TradeStreamReply\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\r\n\x05price\x18\x02 \x01(\x01\x12\x0e\n\x06volume\x18\x03 \x01(\x01\x12(\n\x04\x64\x61te\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06\x61skbit\x18\x05 \x01(\t*,\n\tOrderType\x12\x0f\n\x0bMarketOrder\x10\x00\x12\x0e\n\nLimitOrder\x10\x01\x32\xe0\x04\n\x05Stock\x12\x37\n\x07\x41\x63\x63ount\x12\x15.stock.AccountRequest\x1a\x13.stock.AccountReply\"\x00\x12\x36\n\nTickStream\x12\x12.stock.TickRequest\x1a\x10.stock.TickReply\"\x00\x30\x01\x12\x31\n\x05\x43hart\x12\x13.stock.ChartRequest\x1a\x11.stock.ChartReply\"\x00\x12:\n\x08\x41\x63\x63ounts\x12\x16.google.protobuf.Empty\x1a\x14.stock.AccountsReply\"\x00\x12+\n\x03\x42uy\x12\x11.stock.BuyRequest\x1a\x0f.stock.BuyReply\"\x00\x12.\n\x04Sell\x12\x12.stock.SellRequest\x1a\x10.stock.SellReply\"\x00\x12<\n\tOrderList\x12\x16.google.protobuf.Empty\x1a\x15.stock.OrderListReply\"\x00\x12\x42\n\x0b\x43\x61ncelOrder\x12\x19.stock.CancelOrderRequest\x1a\x16.google.protobuf.Empty\"\x00\x12\x45\n\x0bTradeStream\x12\x19.stock.TradeStreamRequest\x1a\x17.stock.TradeStreamReply\"\x00\x30\x01\x12Q\n\x0fOrderBookStream\x12\x1d.stock.OrderBookStreamRequest\x1a\x1b.stock.OrderBookStreamReply\"\x00\x30\x01\x62\x06proto3'
+  serialized_pb=b'\n\x11stock/stock.proto\x12\x05stock\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\" \n\x0f\x41llMarketsReply\x12\r\n\x05\x63odes\x18\x01 \x03(\t\"P\n\x07\x41\x63\x63ount\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x0f\n\x07\x62\x61lance\x18\x02 \x01(\x01\x12\x12\n\navgByPrice\x18\x03 \x01(\x01\x12\x12\n\ntotalPrice\x18\x04 \x01(\x01\"!\n\x0e\x41\x63\x63ountRequest\x12\x0f\n\x07\x61\x63\x63ount\x18\x01 \x01(\t\"\x1c\n\x0c\x41\x63\x63ountReply\x12\x0c\n\x04info\x18\x01 \x01(\t\"\x1c\n\x0bTickRequest\x12\r\n\x05\x63odes\x18\x01 \x01(\t\"T\n\tTickReply\x12\r\n\x05price\x18\x01 \x01(\x01\x12(\n\x04\x64\x61te\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06volume\x18\x03 \x01(\x01\"D\n\x0c\x43hartRequest\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12&\n\x02to\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\",\n\nChartReply\x12\x1e\n\x04\x64\x61ta\x18\x01 \x03(\x0b\x32\x10.stock.ChartData\"1\n\rAccountsReply\x12 \n\x08\x61\x63\x63ounts\x18\x01 \x03(\x0b\x32\x0e.stock.Account\"Z\n\nBuyRequest\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x1f\n\x05otype\x18\x02 \x01(\x0e\x32\x10.stock.OrderType\x12\x0e\n\x06volume\x18\x03 \x01(\x01\x12\r\n\x05price\x18\x04 \x01(\x01\"\x91\x01\n\x08\x42uyReply\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x10\n\x08\x61vgPrice\x18\x03 \x01(\x01\x12\x0e\n\x06volume\x18\x04 \x01(\x01\x12\x0b\n\x03\x66\x65\x65\x18\x05 \x01(\x01\x12\r\n\x05price\x18\x06 \x01(\x01\x12-\n\tcreatedAt\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"[\n\x0bSellRequest\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x1f\n\x05otype\x18\x02 \x01(\x0e\x32\x10.stock.OrderType\x12\x0e\n\x06volume\x18\x03 \x01(\x01\x12\r\n\x05price\x18\x04 \x01(\x01\"\x92\x01\n\tSellReply\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12\x10\n\x08\x61vgPrice\x18\x03 \x01(\x01\x12\x0e\n\x06volume\x18\x04 \x01(\x01\x12\x0b\n\x03\x66\x65\x65\x18\x05 \x01(\x01\x12\r\n\x05price\x18\x06 \x01(\x01\x12-\n\tcreatedAt\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"}\n\tChartData\x12\x0c\n\x04open\x18\x01 \x01(\x01\x12\x0c\n\x04high\x18\x02 \x01(\x01\x12\x0b\n\x03low\x18\x03 \x01(\x01\x12\r\n\x05\x63lose\x18\x04 \x01(\x01\x12\x0e\n\x06volume\x18\x05 \x01(\x01\x12(\n\x04\x64\x61te\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xfa\x01\n\x05Order\x12\n\n\x02id\x18\x01 \x01(\t\x12\x1f\n\x04side\x18\x02 \x01(\x0e\x32\x11.stock.Order.Side\x12\x1e\n\x04type\x18\x03 \x01(\x0e\x32\x10.stock.OrderType\x12\x0c\n\x04\x63ode\x18\x04 \x01(\t\x12-\n\tcreatedAt\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0b\n\x03\x66\x65\x65\x18\x06 \x01(\x01\x12\r\n\x05state\x18\x07 \x01(\t\x12\x0e\n\x06volume\x18\x08 \x01(\x01\x12\r\n\x05price\x18\t \x01(\x01\x12\x12\n\ntradeCount\x18\n \x01(\x01\"\x18\n\x04Side\x12\x07\n\x03\x41sk\x10\x00\x12\x07\n\x03\x42id\x10\x01\"-\n\x0eOrderListReply\x12\x1b\n\x05order\x18\x01 \x03(\x0b\x32\x0c.stock.Order\" \n\x12\x43\x61ncelOrderRequest\x12\n\n\x02id\x18\x01 \x01(\t\"\'\n\x16OrderBookStreamRequest\x12\r\n\x05\x63odes\x18\x01 \x03(\t\"\x16\n\x14OrderBookStreamReply\"#\n\x12TradeStreamRequest\x12\r\n\x05\x63odes\x18\x01 \x03(\t\"y\n\x10TradeStreamReply\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\r\n\x05price\x18\x02 \x01(\x01\x12\x0e\n\x06volume\x18\x03 \x01(\x01\x12(\n\x04\x64\x61te\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06\x61skbit\x18\x05 \x01(\t*,\n\tOrderType\x12\x0f\n\x0bMarketOrder\x10\x00\x12\x0e\n\nLimitOrder\x10\x01\x32\xa0\x05\n\x05Stock\x12>\n\nAllMarkets\x12\x16.google.protobuf.Empty\x1a\x16.stock.AllMarketsReply\"\x00\x12\x37\n\x07\x41\x63\x63ount\x12\x15.stock.AccountRequest\x1a\x13.stock.AccountReply\"\x00\x12\x36\n\nTickStream\x12\x12.stock.TickRequest\x1a\x10.stock.TickReply\"\x00\x30\x01\x12\x31\n\x05\x43hart\x12\x13.stock.ChartRequest\x1a\x11.stock.ChartReply\"\x00\x12:\n\x08\x41\x63\x63ounts\x12\x16.google.protobuf.Empty\x1a\x14.stock.AccountsReply\"\x00\x12+\n\x03\x42uy\x12\x11.stock.BuyRequest\x1a\x0f.stock.BuyReply\"\x00\x12.\n\x04Sell\x12\x12.stock.SellRequest\x1a\x10.stock.SellReply\"\x00\x12<\n\tOrderList\x12\x16.google.protobuf.Empty\x1a\x15.stock.OrderListReply\"\x00\x12\x42\n\x0b\x43\x61ncelOrder\x12\x19.stock.CancelOrderRequest\x1a\x16.google.protobuf.Empty\"\x00\x12\x45\n\x0bTradeStream\x12\x19.stock.TradeStreamRequest\x1a\x17.stock.TradeStreamReply\"\x00\x30\x01\x12Q\n\x0fOrderBookStream\x12\x1d.stock.OrderBookStreamRequest\x1a\x1b.stock.OrderBookStreamReply\"\x00\x30\x01\x62\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -46,8 +46,8 @@ _ORDERTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1688,
-  serialized_end=1732,
+  serialized_start=1722,
+  serialized_end=1766,
 )
 _sym_db.RegisterEnumDescriptor(_ORDERTYPE)
 
@@ -76,10 +76,42 @@ _ORDER_SIDE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1356,
-  serialized_end=1380,
+  serialized_start=1390,
+  serialized_end=1414,
 )
 _sym_db.RegisterEnumDescriptor(_ORDER_SIDE)
+
+
+_ALLMARKETSREPLY = _descriptor.Descriptor(
+  name='AllMarketsReply',
+  full_name='stock.AllMarketsReply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='codes', full_name='stock.AllMarketsReply.codes', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=90,
+  serialized_end=122,
+)
 
 
 _ACCOUNT = _descriptor.Descriptor(
@@ -130,8 +162,8 @@ _ACCOUNT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=90,
-  serialized_end=170,
+  serialized_start=124,
+  serialized_end=204,
 )
 
 
@@ -162,8 +194,8 @@ _ACCOUNTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=172,
-  serialized_end=205,
+  serialized_start=206,
+  serialized_end=239,
 )
 
 
@@ -194,8 +226,8 @@ _ACCOUNTREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=207,
-  serialized_end=235,
+  serialized_start=241,
+  serialized_end=269,
 )
 
 
@@ -226,8 +258,8 @@ _TICKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=237,
-  serialized_end=265,
+  serialized_start=271,
+  serialized_end=299,
 )
 
 
@@ -272,8 +304,8 @@ _TICKREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=267,
-  serialized_end=351,
+  serialized_start=301,
+  serialized_end=385,
 )
 
 
@@ -311,8 +343,8 @@ _CHARTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=353,
-  serialized_end=421,
+  serialized_start=387,
+  serialized_end=455,
 )
 
 
@@ -343,8 +375,8 @@ _CHARTREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=423,
-  serialized_end=467,
+  serialized_start=457,
+  serialized_end=501,
 )
 
 
@@ -375,8 +407,8 @@ _ACCOUNTSREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=469,
-  serialized_end=518,
+  serialized_start=503,
+  serialized_end=552,
 )
 
 
@@ -428,8 +460,8 @@ _BUYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=520,
-  serialized_end=610,
+  serialized_start=554,
+  serialized_end=644,
 )
 
 
@@ -502,8 +534,8 @@ _BUYREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=613,
-  serialized_end=758,
+  serialized_start=647,
+  serialized_end=792,
 )
 
 
@@ -555,8 +587,8 @@ _SELLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=760,
-  serialized_end=851,
+  serialized_start=794,
+  serialized_end=885,
 )
 
 
@@ -629,8 +661,8 @@ _SELLREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=854,
-  serialized_end=1000,
+  serialized_start=888,
+  serialized_end=1034,
 )
 
 
@@ -696,8 +728,8 @@ _CHARTDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1002,
-  serialized_end=1127,
+  serialized_start=1036,
+  serialized_end=1161,
 )
 
 
@@ -792,8 +824,8 @@ _ORDER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1130,
-  serialized_end=1380,
+  serialized_start=1164,
+  serialized_end=1414,
 )
 
 
@@ -824,8 +856,8 @@ _ORDERLISTREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1382,
-  serialized_end=1427,
+  serialized_start=1416,
+  serialized_end=1461,
 )
 
 
@@ -856,8 +888,8 @@ _CANCELORDERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1429,
-  serialized_end=1461,
+  serialized_start=1463,
+  serialized_end=1495,
 )
 
 
@@ -888,8 +920,8 @@ _ORDERBOOKSTREAMREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1463,
-  serialized_end=1502,
+  serialized_start=1497,
+  serialized_end=1536,
 )
 
 
@@ -913,8 +945,8 @@ _ORDERBOOKSTREAMREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1504,
-  serialized_end=1526,
+  serialized_start=1538,
+  serialized_end=1560,
 )
 
 
@@ -945,8 +977,8 @@ _TRADESTREAMREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1528,
-  serialized_end=1563,
+  serialized_start=1562,
+  serialized_end=1597,
 )
 
 
@@ -1005,8 +1037,8 @@ _TRADESTREAMREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1565,
-  serialized_end=1686,
+  serialized_start=1599,
+  serialized_end=1720,
 )
 
 _TICKREPLY.fields_by_name['date'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
@@ -1024,6 +1056,7 @@ _ORDER.fields_by_name['createdAt'].message_type = google_dot_protobuf_dot_timest
 _ORDER_SIDE.containing_type = _ORDER
 _ORDERLISTREPLY.fields_by_name['order'].message_type = _ORDER
 _TRADESTREAMREPLY.fields_by_name['date'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+DESCRIPTOR.message_types_by_name['AllMarketsReply'] = _ALLMARKETSREPLY
 DESCRIPTOR.message_types_by_name['Account'] = _ACCOUNT
 DESCRIPTOR.message_types_by_name['AccountRequest'] = _ACCOUNTREQUEST
 DESCRIPTOR.message_types_by_name['AccountReply'] = _ACCOUNTREPLY
@@ -1046,6 +1079,13 @@ DESCRIPTOR.message_types_by_name['TradeStreamRequest'] = _TRADESTREAMREQUEST
 DESCRIPTOR.message_types_by_name['TradeStreamReply'] = _TRADESTREAMREPLY
 DESCRIPTOR.enum_types_by_name['OrderType'] = _ORDERTYPE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+AllMarketsReply = _reflection.GeneratedProtocolMessageType('AllMarketsReply', (_message.Message,), {
+  'DESCRIPTOR' : _ALLMARKETSREPLY,
+  '__module__' : 'stock.stock_pb2'
+  # @@protoc_insertion_point(class_scope:stock.AllMarketsReply)
+  })
+_sym_db.RegisterMessage(AllMarketsReply)
 
 Account = _reflection.GeneratedProtocolMessageType('Account', (_message.Message,), {
   'DESCRIPTOR' : _ACCOUNT,
@@ -1196,13 +1236,23 @@ _STOCK = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1735,
-  serialized_end=2343,
+  serialized_start=1769,
+  serialized_end=2441,
   methods=[
+  _descriptor.MethodDescriptor(
+    name='AllMarkets',
+    full_name='stock.Stock.AllMarkets',
+    index=0,
+    containing_service=None,
+    input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    output_type=_ALLMARKETSREPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
   _descriptor.MethodDescriptor(
     name='Account',
     full_name='stock.Stock.Account',
-    index=0,
+    index=1,
     containing_service=None,
     input_type=_ACCOUNTREQUEST,
     output_type=_ACCOUNTREPLY,
@@ -1212,7 +1262,7 @@ _STOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='TickStream',
     full_name='stock.Stock.TickStream',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_TICKREQUEST,
     output_type=_TICKREPLY,
@@ -1222,7 +1272,7 @@ _STOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Chart',
     full_name='stock.Stock.Chart',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_CHARTREQUEST,
     output_type=_CHARTREPLY,
@@ -1232,7 +1282,7 @@ _STOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Accounts',
     full_name='stock.Stock.Accounts',
-    index=3,
+    index=4,
     containing_service=None,
     input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
     output_type=_ACCOUNTSREPLY,
@@ -1242,7 +1292,7 @@ _STOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Buy',
     full_name='stock.Stock.Buy',
-    index=4,
+    index=5,
     containing_service=None,
     input_type=_BUYREQUEST,
     output_type=_BUYREPLY,
@@ -1252,7 +1302,7 @@ _STOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Sell',
     full_name='stock.Stock.Sell',
-    index=5,
+    index=6,
     containing_service=None,
     input_type=_SELLREQUEST,
     output_type=_SELLREPLY,
@@ -1262,7 +1312,7 @@ _STOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='OrderList',
     full_name='stock.Stock.OrderList',
-    index=6,
+    index=7,
     containing_service=None,
     input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
     output_type=_ORDERLISTREPLY,
@@ -1272,7 +1322,7 @@ _STOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='CancelOrder',
     full_name='stock.Stock.CancelOrder',
-    index=7,
+    index=8,
     containing_service=None,
     input_type=_CANCELORDERREQUEST,
     output_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
@@ -1282,7 +1332,7 @@ _STOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='TradeStream',
     full_name='stock.Stock.TradeStream',
-    index=8,
+    index=9,
     containing_service=None,
     input_type=_TRADESTREAMREQUEST,
     output_type=_TRADESTREAMREPLY,
@@ -1292,7 +1342,7 @@ _STOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='OrderBookStream',
     full_name='stock.Stock.OrderBookStream',
-    index=9,
+    index=10,
     containing_service=None,
     input_type=_ORDERBOOKSTREAMREQUEST,
     output_type=_ORDERBOOKSTREAMREPLY,

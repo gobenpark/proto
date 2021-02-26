@@ -15,6 +15,11 @@ class StockStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.AllMarkets = channel.unary_unary(
+                '/stock.Stock/AllMarkets',
+                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                response_deserializer=stock_dot_stock__pb2.AllMarketsReply.FromString,
+                )
         self.Account = channel.unary_unary(
                 '/stock.Stock/Account',
                 request_serializer=stock_dot_stock__pb2.AccountRequest.SerializeToString,
@@ -69,6 +74,12 @@ class StockStub(object):
 
 class StockServicer(object):
     """Missing associated documentation comment in .proto file."""
+
+    def AllMarkets(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def Account(self, request, context):
         """특정 소유하고 있는 주식,코인 정보
@@ -135,6 +146,11 @@ class StockServicer(object):
 
 def add_StockServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'AllMarkets': grpc.unary_unary_rpc_method_handler(
+                    servicer.AllMarkets,
+                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    response_serializer=stock_dot_stock__pb2.AllMarketsReply.SerializeToString,
+            ),
             'Account': grpc.unary_unary_rpc_method_handler(
                     servicer.Account,
                     request_deserializer=stock_dot_stock__pb2.AccountRequest.FromString,
@@ -194,6 +210,23 @@ def add_StockServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class Stock(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def AllMarkets(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/stock.Stock/AllMarkets',
+            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            stock_dot_stock__pb2.AllMarketsReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def Account(request,

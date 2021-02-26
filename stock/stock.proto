@@ -7,6 +7,7 @@ import "google/protobuf/timestamp.proto";
 
 
 service Stock {
+  rpc AllMarkets(google.protobuf.Empty) returns (AllMarketsReply){}
   //특정 소유하고 있는 주식,코인 정보
   rpc Account(AccountRequest) returns (AccountReply) {}
   rpc TickStream(TickRequest) returns (stream TickReply) {}
@@ -21,9 +22,14 @@ service Stock {
   rpc OrderBookStream(OrderBookStreamRequest) returns (stream OrderBookStreamReply) {}
 }
 
+
 enum OrderType{
   MarketOrder = 0;
   LimitOrder = 1;
+}
+
+message AllMarketsReply {
+  repeated string codes = 1;
 }
 
 message Account {
