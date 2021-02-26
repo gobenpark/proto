@@ -1471,6 +1471,24 @@ func (m *TradeStreamReply) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Code
+
+	// no validation rules for Price
+
+	// no validation rules for Volume
+
+	if v, ok := interface{}(m.GetDate()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return TradeStreamReplyValidationError{
+				field:  "Date",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for Askbit
+
 	return nil
 }
 

@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="benproto",
-    version="1.0.1",
+    version="1.0.3",
     license='BSD 3-Clause License',
     author="benproto",
     author_email="qjadn0914@naver.com",
