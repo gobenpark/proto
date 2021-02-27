@@ -27,3 +27,5 @@ Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,\
 Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,plugins=grpc:. ./stock/stock.proto
 
 all: proto-go proto-python upload
+	git commit -m "upgrade"
+	git push origin master

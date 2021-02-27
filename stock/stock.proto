@@ -29,7 +29,11 @@ enum OrderType{
 }
 
 message AllMarketsReply {
-  repeated string codes = 1;
+  message Market {
+    string code = 1;
+    string name = 2;
+  }
+  repeated Market markets = 1;
 }
 
 message Account {
