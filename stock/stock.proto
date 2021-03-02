@@ -20,6 +20,7 @@ service Stock {
   rpc CancelOrder(CancelOrderRequest) returns (google.protobuf.Empty){}
   rpc TradeStream(TradeStreamRequest) returns (stream TradeStreamReply) {}
   rpc OrderBookStream(OrderBookStreamRequest) returns (stream OrderBookStreamReply) {}
+  rpc Order(OrderRequest) returns (OrderReply) {}
 }
 
 
@@ -128,6 +129,7 @@ message Order {
   }
 
   string id = 1;
+  //주문종류
   Side side = 2;
   OrderType type = 3;
   string code = 4;
@@ -166,4 +168,12 @@ message TradeStreamReply {
   double volume = 3;
   google.protobuf.Timestamp date = 4;
   string askbit = 5;
+}
+
+message OrderRequest {
+  string id = 1;
+}
+
+message OrderReply{
+  Order order = 1;
 }

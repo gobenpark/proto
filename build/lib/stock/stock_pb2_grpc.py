@@ -70,6 +70,11 @@ class StockStub(object):
                 request_serializer=stock_dot_stock__pb2.OrderBookStreamRequest.SerializeToString,
                 response_deserializer=stock_dot_stock__pb2.OrderBookStreamReply.FromString,
                 )
+        self.Order = channel.unary_unary(
+                '/stock.Stock/Order',
+                request_serializer=stock_dot_stock__pb2.OrderRequest.SerializeToString,
+                response_deserializer=stock_dot_stock__pb2.OrderReply.FromString,
+                )
 
 
 class StockServicer(object):
@@ -143,6 +148,12 @@ class StockServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Order(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_StockServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -200,6 +211,11 @@ def add_StockServicer_to_server(servicer, server):
                     servicer.OrderBookStream,
                     request_deserializer=stock_dot_stock__pb2.OrderBookStreamRequest.FromString,
                     response_serializer=stock_dot_stock__pb2.OrderBookStreamReply.SerializeToString,
+            ),
+            'Order': grpc.unary_unary_rpc_method_handler(
+                    servicer.Order,
+                    request_deserializer=stock_dot_stock__pb2.OrderRequest.FromString,
+                    response_serializer=stock_dot_stock__pb2.OrderReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -395,5 +411,22 @@ class Stock(object):
         return grpc.experimental.unary_stream(request, target, '/stock.Stock/OrderBookStream',
             stock_dot_stock__pb2.OrderBookStreamRequest.SerializeToString,
             stock_dot_stock__pb2.OrderBookStreamReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Order(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/stock.Stock/Order',
+            stock_dot_stock__pb2.OrderRequest.SerializeToString,
+            stock_dot_stock__pb2.OrderReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
