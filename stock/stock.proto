@@ -81,6 +81,7 @@ message BuyRequest {
   OrderType otype = 2;
   double volume = 3;
   double price = 4;
+  string identifier = 5;
 }
 
 message BuyReply {
@@ -98,6 +99,7 @@ message SellRequest{
   OrderType otype = 2;
   double volume = 3;
   double price = 4;
+  string identifier = 5;
 }
 
 message SellReply {
@@ -171,7 +173,8 @@ message TradeStreamReply {
 }
 
 message OrderRequest {
-  string id = 1;
+  string uuid = 1;
+  string identifier = 2;
 }
 
 message OrderReply{

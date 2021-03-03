@@ -715,6 +715,8 @@ func (m *BuyRequest) Validate() error {
 
 	// no validation rules for Price
 
+	// no validation rules for Identifier
+
 	return nil
 }
 
@@ -873,6 +875,8 @@ func (m *SellRequest) Validate() error {
 	// no validation rules for Volume
 
 	// no validation rules for Price
+
+	// no validation rules for Identifier
 
 	return nil
 }
@@ -1634,7 +1638,9 @@ func (m *OrderRequest) Validate() error {
 		return nil
 	}
 
-	// no validation rules for Id
+	// no validation rules for Uuid
+
+	// no validation rules for Identifier
 
 	return nil
 }
