@@ -76,3 +76,4 @@ fabric.properties
 ./build
 ./dist
 ./benproto.egg-info
+./venv
