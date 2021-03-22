@@ -33,9 +33,9 @@ proto-go:
      -I=${GOPATH}/src/github.com  \
      -I=${GOPATH}/src/github.com/envoyproxy/protoc-gen-validate --validate_out="lang=go,paths=source_relative:." \
      -I=${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway \
-     --go_out ./stock \
+     --go_out . \
      --go_opt paths=source_relative \
-     --go-grpc_out ./stock \
+     --go-grpc_out . \
      --go-grpc_opt paths=source_relative \
 	./stock/stock.proto
 
