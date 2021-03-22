@@ -13,18 +13,32 @@ proto-python:
          -I=${GOPATH}/src/github.com/envoyproxy/protoc-gen-validate \
          -I=${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway --python_out=. --grpc_python_out=. ./stock/stock.proto
 
+#proto-go:
+#	protoc -I=. \
+#     -I=${GOPATH}/src \
+#     -I=${GOPATH}/bin \
+#     -I=${GOPATH}/src/github.com  \
+#     -I=${GOPATH}/src/github.com/envoyproxy/protoc-gen-validate \
+#     -I=${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway \
+#     --validate_out="lang=go,paths=source_relative:./stock"
+#     --grpc-gateway_out=logtostderr=true:.\
+#     --gogoslick_out=\
+#Mgoogle/protobuf/empty.proto=github.com/gogo/protobuf/types,\
+#Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,\
+#Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,plugins=grpc:. ./stock/stock.proto
+
 proto-go:
 	protoc -I=. \
      -I=${GOPATH}/src \
-     -I=${GOPATH}/bin \
      -I=${GOPATH}/src/github.com  \
-     -I=${GOPATH}/src/github.com/envoyproxy/protoc-gen-validate --validate_out="lang=go:." \
+     -I=${GOPATH}/src/github.com/envoyproxy/protoc-gen-validate --validate_out="lang=go,paths=source_relative:." \
      -I=${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway \
-     --grpc-gateway_out=logtostderr=true:.\
-     --gogoslick_out=\
-Mgoogle/protobuf/empty.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/any.proto=github.com/gogo/protobuf/types,\
-Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,plugins=grpc:. ./stock/stock.proto
+     --go_out ./stock \
+     --go_opt paths=source_relative \
+     --go-grpc_out ./stock \
+     --go-grpc_opt paths=source_relative \
+	./stock/stock.proto
+
 
 all: proto-go proto-python upload
 	git add .
