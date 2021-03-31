@@ -19,7 +19,7 @@ service Stock {
   rpc CancelOrder(CancelOrderRequest) returns (google.protobuf.Empty){}
   rpc TradeStream(TradeStreamRequest) returns (stream TradeStreamReply) {}
   rpc OrderBookStream(OrderBookStreamRequest) returns (stream OrderBookStreamReply) {}
-  rpc Order(OrderRequest) returns (OrderReply) {}
+  rpc OrderEventStream(OrderEventStreamRequest) returns (stream OrderEventStreamReply) {}
 }
 
 
@@ -179,11 +179,11 @@ message TradeStreamReply {
   string askbit = 5;
 }
 
-message OrderRequest {
+message OrderEventStreamRequest {
   string uuid = 1;
   string identifier = 2;
 }
 
-message OrderReply{
+message OrderEventStreamReply{
   Order order = 1;
 }

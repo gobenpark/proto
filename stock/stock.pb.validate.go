@@ -1710,10 +1710,10 @@ var _ interface {
 	ErrorName() string
 } = TradeStreamReplyValidationError{}
 
-// Validate checks the field values on OrderRequest with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
-func (m *OrderRequest) Validate() error {
+// Validate checks the field values on OrderEventStreamRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *OrderEventStreamRequest) Validate() error {
 	if m == nil {
 		return nil
 	}
@@ -1725,9 +1725,9 @@ func (m *OrderRequest) Validate() error {
 	return nil
 }
 
-// OrderRequestValidationError is the validation error returned by
-// OrderRequest.Validate if the designated constraints aren't met.
-type OrderRequestValidationError struct {
+// OrderEventStreamRequestValidationError is the validation error returned by
+// OrderEventStreamRequest.Validate if the designated constraints aren't met.
+type OrderEventStreamRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1735,22 +1735,24 @@ type OrderRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e OrderRequestValidationError) Field() string { return e.field }
+func (e OrderEventStreamRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e OrderRequestValidationError) Reason() string { return e.reason }
+func (e OrderEventStreamRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e OrderRequestValidationError) Cause() error { return e.cause }
+func (e OrderEventStreamRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e OrderRequestValidationError) Key() bool { return e.key }
+func (e OrderEventStreamRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e OrderRequestValidationError) ErrorName() string { return "OrderRequestValidationError" }
+func (e OrderEventStreamRequestValidationError) ErrorName() string {
+	return "OrderEventStreamRequestValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e OrderRequestValidationError) Error() string {
+func (e OrderEventStreamRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1762,14 +1764,14 @@ func (e OrderRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sOrderRequest.%s: %s%s",
+		"invalid %sOrderEventStreamRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = OrderRequestValidationError{}
+var _ error = OrderEventStreamRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -1777,18 +1779,19 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = OrderRequestValidationError{}
+} = OrderEventStreamRequestValidationError{}
 
-// Validate checks the field values on OrderReply with the rules defined in the
-// proto definition for this message. If any rules are violated, an error is returned.
-func (m *OrderReply) Validate() error {
+// Validate checks the field values on OrderEventStreamReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *OrderEventStreamReply) Validate() error {
 	if m == nil {
 		return nil
 	}
 
 	if v, ok := interface{}(m.GetOrder()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return OrderReplyValidationError{
+			return OrderEventStreamReplyValidationError{
 				field:  "Order",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -1799,9 +1802,9 @@ func (m *OrderReply) Validate() error {
 	return nil
 }
 
-// OrderReplyValidationError is the validation error returned by
-// OrderReply.Validate if the designated constraints aren't met.
-type OrderReplyValidationError struct {
+// OrderEventStreamReplyValidationError is the validation error returned by
+// OrderEventStreamReply.Validate if the designated constraints aren't met.
+type OrderEventStreamReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1809,22 +1812,24 @@ type OrderReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e OrderReplyValidationError) Field() string { return e.field }
+func (e OrderEventStreamReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e OrderReplyValidationError) Reason() string { return e.reason }
+func (e OrderEventStreamReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e OrderReplyValidationError) Cause() error { return e.cause }
+func (e OrderEventStreamReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e OrderReplyValidationError) Key() bool { return e.key }
+func (e OrderEventStreamReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e OrderReplyValidationError) ErrorName() string { return "OrderReplyValidationError" }
+func (e OrderEventStreamReplyValidationError) ErrorName() string {
+	return "OrderEventStreamReplyValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e OrderReplyValidationError) Error() string {
+func (e OrderEventStreamReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1836,14 +1841,14 @@ func (e OrderReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sOrderReply.%s: %s%s",
+		"invalid %sOrderEventStreamReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = OrderReplyValidationError{}
+var _ error = OrderEventStreamReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -1851,7 +1856,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = OrderReplyValidationError{}
+} = OrderEventStreamReplyValidationError{}
 
 // Validate checks the field values on AllMarketsReply_Market with the rules
 // defined in the proto definition for this message. If any rules are

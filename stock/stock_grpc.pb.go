@@ -32,7 +32,7 @@ type StockClient interface {
 	CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	TradeStream(ctx context.Context, in *TradeStreamRequest, opts ...grpc.CallOption) (Stock_TradeStreamClient, error)
 	OrderBookStream(ctx context.Context, in *OrderBookStreamRequest, opts ...grpc.CallOption) (Stock_OrderBookStreamClient, error)
-	Order(ctx context.Context, in *OrderRequest, opts ...grpc.CallOption) (*OrderReply, error)
+	OrderEventStream(ctx context.Context, in *OrderEventStreamRequest, opts ...grpc.CallOption) (Stock_OrderEventStreamClient, error)
 }
 
 type stockClient struct {
@@ -211,13 +211,36 @@ func (x *stockOrderBookStreamClient) Recv() (*OrderBookStreamReply, error) {
 	return m, nil
 }
 
-func (c *stockClient) Order(ctx context.Context, in *OrderRequest, opts ...grpc.CallOption) (*OrderReply, error) {
-	out := new(OrderReply)
-	err := c.cc.Invoke(ctx, "/Stock/Order", in, out, opts...)
+func (c *stockClient) OrderEventStream(ctx context.Context, in *OrderEventStreamRequest, opts ...grpc.CallOption) (Stock_OrderEventStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Stock_ServiceDesc.Streams[3], "/Stock/OrderEventStream", opts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &stockOrderEventStreamClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Stock_OrderEventStreamClient interface {
+	Recv() (*OrderEventStreamReply, error)
+	grpc.ClientStream
+}
+
+type stockOrderEventStreamClient struct {
+	grpc.ClientStream
+}
+
+func (x *stockOrderEventStreamClient) Recv() (*OrderEventStreamReply, error) {
+	m := new(OrderEventStreamReply)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 // StockServer is the server API for Stock service.
@@ -237,7 +260,7 @@ type StockServer interface {
 	CancelOrder(context.Context, *CancelOrderRequest) (*emptypb.Empty, error)
 	TradeStream(*TradeStreamRequest, Stock_TradeStreamServer) error
 	OrderBookStream(*OrderBookStreamRequest, Stock_OrderBookStreamServer) error
-	Order(context.Context, *OrderRequest) (*OrderReply, error)
+	OrderEventStream(*OrderEventStreamRequest, Stock_OrderEventStreamServer) error
 	mustEmbedUnimplementedStockServer()
 }
 
@@ -278,8 +301,8 @@ func (UnimplementedStockServer) TradeStream(*TradeStreamRequest, Stock_TradeStre
 func (UnimplementedStockServer) OrderBookStream(*OrderBookStreamRequest, Stock_OrderBookStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method OrderBookStream not implemented")
 }
-func (UnimplementedStockServer) Order(context.Context, *OrderRequest) (*OrderReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Order not implemented")
+func (UnimplementedStockServer) OrderEventStream(*OrderEventStreamRequest, Stock_OrderEventStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method OrderEventStream not implemented")
 }
 func (UnimplementedStockServer) mustEmbedUnimplementedStockServer() {}
 
@@ -501,22 +524,25 @@ func (x *stockOrderBookStreamServer) Send(m *OrderBookStreamReply) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _Stock_Order_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OrderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
+func _Stock_OrderEventStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(OrderEventStreamRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(StockServer).Order(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/Stock/Order",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StockServer).Order(ctx, req.(*OrderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(StockServer).OrderEventStream(m, &stockOrderEventStreamServer{stream})
+}
+
+type Stock_OrderEventStreamServer interface {
+	Send(*OrderEventStreamReply) error
+	grpc.ServerStream
+}
+
+type stockOrderEventStreamServer struct {
+	grpc.ServerStream
+}
+
+func (x *stockOrderEventStreamServer) Send(m *OrderEventStreamReply) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 // Stock_ServiceDesc is the grpc.ServiceDesc for Stock service.
@@ -558,10 +584,6 @@ var Stock_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "CancelOrder",
 			Handler:    _Stock_CancelOrder_Handler,
 		},
-		{
-			MethodName: "Order",
-			Handler:    _Stock_Order_Handler,
-		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
@@ -577,6 +599,11 @@ var Stock_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "OrderBookStream",
 			Handler:       _Stock_OrderBookStream_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "OrderEventStream",
+			Handler:       _Stock_OrderEventStream_Handler,
 			ServerStreams: true,
 		},
 	},
