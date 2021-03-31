@@ -12,7 +12,7 @@ service Stock {
   rpc TickStream(TickRequest) returns (stream TickReply) {}
   rpc Chart(ChartRequest) returns (ChartReply) {}
   //모든 소유하고 있는 주식, 코인정보
-  rpc Accounts(google.protobuf.Empty) returns (AccountsReply) {}
+  rpc Position(google.protobuf.Empty) returns (PositionReply) {}
   rpc Buy(BuyRequest) returns (BuyReply){}
   rpc Sell(SellRequest) returns (SellReply){}
   rpc OrderList(google.protobuf.Empty) returns (OrderListReply){}
@@ -70,8 +70,16 @@ message ChartReply {
   repeated ChartData data = 1;
 }
 
-message AccountsReply{
-  repeated Account accounts = 1;
+
+message Position {
+  string code = 1;
+  double price = 2;
+  double amount = 3;
+  google.protobuf.Timestamp date = 4;
+}
+
+message PositionReply{
+  repeated Position positions = 1;
 }
 
 

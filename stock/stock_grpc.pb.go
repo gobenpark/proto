@@ -25,7 +25,7 @@ type StockClient interface {
 	TickStream(ctx context.Context, in *TickRequest, opts ...grpc.CallOption) (Stock_TickStreamClient, error)
 	Chart(ctx context.Context, in *ChartRequest, opts ...grpc.CallOption) (*ChartReply, error)
 	//모든 소유하고 있는 주식, 코인정보
-	Accounts(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AccountsReply, error)
+	Position(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PositionReply, error)
 	Buy(ctx context.Context, in *BuyRequest, opts ...grpc.CallOption) (*BuyReply, error)
 	Sell(ctx context.Context, in *SellRequest, opts ...grpc.CallOption) (*SellReply, error)
 	OrderList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*OrderListReply, error)
@@ -102,9 +102,9 @@ func (c *stockClient) Chart(ctx context.Context, in *ChartRequest, opts ...grpc.
 	return out, nil
 }
 
-func (c *stockClient) Accounts(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*AccountsReply, error) {
-	out := new(AccountsReply)
-	err := c.cc.Invoke(ctx, "/Stock/Accounts", in, out, opts...)
+func (c *stockClient) Position(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PositionReply, error) {
+	out := new(PositionReply)
+	err := c.cc.Invoke(ctx, "/Stock/Position", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -230,7 +230,7 @@ type StockServer interface {
 	TickStream(*TickRequest, Stock_TickStreamServer) error
 	Chart(context.Context, *ChartRequest) (*ChartReply, error)
 	//모든 소유하고 있는 주식, 코인정보
-	Accounts(context.Context, *emptypb.Empty) (*AccountsReply, error)
+	Position(context.Context, *emptypb.Empty) (*PositionReply, error)
 	Buy(context.Context, *BuyRequest) (*BuyReply, error)
 	Sell(context.Context, *SellRequest) (*SellReply, error)
 	OrderList(context.Context, *emptypb.Empty) (*OrderListReply, error)
@@ -257,8 +257,8 @@ func (UnimplementedStockServer) TickStream(*TickRequest, Stock_TickStreamServer)
 func (UnimplementedStockServer) Chart(context.Context, *ChartRequest) (*ChartReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Chart not implemented")
 }
-func (UnimplementedStockServer) Accounts(context.Context, *emptypb.Empty) (*AccountsReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Accounts not implemented")
+func (UnimplementedStockServer) Position(context.Context, *emptypb.Empty) (*PositionReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Position not implemented")
 }
 func (UnimplementedStockServer) Buy(context.Context, *BuyRequest) (*BuyReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Buy not implemented")
@@ -369,20 +369,20 @@ func _Stock_Chart_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Stock_Accounts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Stock_Position_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StockServer).Accounts(ctx, in)
+		return srv.(StockServer).Position(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/Stock/Accounts",
+		FullMethod: "/Stock/Position",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StockServer).Accounts(ctx, req.(*emptypb.Empty))
+		return srv.(StockServer).Position(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -539,8 +539,8 @@ var Stock_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Stock_Chart_Handler,
 		},
 		{
-			MethodName: "Accounts",
-			Handler:    _Stock_Accounts_Handler,
+			MethodName: "Position",
+			Handler:    _Stock_Position_Handler,
 		},
 		{
 			MethodName: "Buy",
