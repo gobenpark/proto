@@ -620,35 +620,35 @@ var _ interface {
 	ErrorName() string
 } = ChartReplyValidationError{}
 
-// Validate checks the field values on AccountsReply with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
-func (m *AccountsReply) Validate() error {
+// Validate checks the field values on Position with the rules defined in the
+// proto definition for this message. If any rules are violated, an error is returned.
+func (m *Position) Validate() error {
 	if m == nil {
 		return nil
 	}
 
-	for idx, item := range m.GetAccounts() {
-		_, _ = idx, item
+	// no validation rules for Code
 
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return AccountsReplyValidationError{
-					field:  fmt.Sprintf("Accounts[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
+	// no validation rules for Price
+
+	// no validation rules for Amount
+
+	if v, ok := interface{}(m.GetDate()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PositionValidationError{
+				field:  "Date",
+				reason: "embedded message failed validation",
+				cause:  err,
 			}
 		}
-
 	}
 
 	return nil
 }
 
-// AccountsReplyValidationError is the validation error returned by
-// AccountsReply.Validate if the designated constraints aren't met.
-type AccountsReplyValidationError struct {
+// PositionValidationError is the validation error returned by
+// Position.Validate if the designated constraints aren't met.
+type PositionValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -656,22 +656,22 @@ type AccountsReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e AccountsReplyValidationError) Field() string { return e.field }
+func (e PositionValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e AccountsReplyValidationError) Reason() string { return e.reason }
+func (e PositionValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e AccountsReplyValidationError) Cause() error { return e.cause }
+func (e PositionValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e AccountsReplyValidationError) Key() bool { return e.key }
+func (e PositionValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e AccountsReplyValidationError) ErrorName() string { return "AccountsReplyValidationError" }
+func (e PositionValidationError) ErrorName() string { return "PositionValidationError" }
 
 // Error satisfies the builtin error interface
-func (e AccountsReplyValidationError) Error() string {
+func (e PositionValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -683,14 +683,14 @@ func (e AccountsReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sAccountsReply.%s: %s%s",
+		"invalid %sPosition.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = AccountsReplyValidationError{}
+var _ error = PositionValidationError{}
 
 var _ interface {
 	Field() string
@@ -698,7 +698,87 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = AccountsReplyValidationError{}
+} = PositionValidationError{}
+
+// Validate checks the field values on PositionReply with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *PositionReply) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	for idx, item := range m.GetPositions() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return PositionReplyValidationError{
+					field:  fmt.Sprintf("Positions[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// PositionReplyValidationError is the validation error returned by
+// PositionReply.Validate if the designated constraints aren't met.
+type PositionReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PositionReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PositionReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PositionReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PositionReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PositionReplyValidationError) ErrorName() string { return "PositionReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e PositionReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPositionReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PositionReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PositionReplyValidationError{}
 
 // Validate checks the field values on BuyRequest with the rules defined in the
 // proto definition for this message. If any rules are violated, an error is returned.
