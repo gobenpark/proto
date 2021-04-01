@@ -32,7 +32,7 @@ type StockClient interface {
 	CancelOrder(ctx context.Context, in *CancelOrderRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	TradeStream(ctx context.Context, in *TradeStreamRequest, opts ...grpc.CallOption) (Stock_TradeStreamClient, error)
 	OrderBookStream(ctx context.Context, in *OrderBookStreamRequest, opts ...grpc.CallOption) (Stock_OrderBookStreamClient, error)
-	OrderState(ctx context.Context, in *OrderStateRequest, opts ...grpc.CallOption) (*OrderStateReply, error)
+	OrderInfo(ctx context.Context, in *OrderInfoRequest, opts ...grpc.CallOption) (*OrderInfoReply, error)
 	OrderEventStream(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (Stock_OrderEventStreamClient, error)
 }
 
@@ -212,9 +212,9 @@ func (x *stockOrderBookStreamClient) Recv() (*OrderBookStreamReply, error) {
 	return m, nil
 }
 
-func (c *stockClient) OrderState(ctx context.Context, in *OrderStateRequest, opts ...grpc.CallOption) (*OrderStateReply, error) {
-	out := new(OrderStateReply)
-	err := c.cc.Invoke(ctx, "/Stock/OrderState", in, out, opts...)
+func (c *stockClient) OrderInfo(ctx context.Context, in *OrderInfoRequest, opts ...grpc.CallOption) (*OrderInfoReply, error) {
+	out := new(OrderInfoReply)
+	err := c.cc.Invoke(ctx, "/Stock/OrderInfo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -270,7 +270,7 @@ type StockServer interface {
 	CancelOrder(context.Context, *CancelOrderRequest) (*emptypb.Empty, error)
 	TradeStream(*TradeStreamRequest, Stock_TradeStreamServer) error
 	OrderBookStream(*OrderBookStreamRequest, Stock_OrderBookStreamServer) error
-	OrderState(context.Context, *OrderStateRequest) (*OrderStateReply, error)
+	OrderInfo(context.Context, *OrderInfoRequest) (*OrderInfoReply, error)
 	OrderEventStream(*emptypb.Empty, Stock_OrderEventStreamServer) error
 	mustEmbedUnimplementedStockServer()
 }
@@ -312,8 +312,8 @@ func (UnimplementedStockServer) TradeStream(*TradeStreamRequest, Stock_TradeStre
 func (UnimplementedStockServer) OrderBookStream(*OrderBookStreamRequest, Stock_OrderBookStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method OrderBookStream not implemented")
 }
-func (UnimplementedStockServer) OrderState(context.Context, *OrderStateRequest) (*OrderStateReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method OrderState not implemented")
+func (UnimplementedStockServer) OrderInfo(context.Context, *OrderInfoRequest) (*OrderInfoReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OrderInfo not implemented")
 }
 func (UnimplementedStockServer) OrderEventStream(*emptypb.Empty, Stock_OrderEventStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method OrderEventStream not implemented")
@@ -538,20 +538,20 @@ func (x *stockOrderBookStreamServer) Send(m *OrderBookStreamReply) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _Stock_OrderState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OrderStateRequest)
+func _Stock_OrderInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OrderInfoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StockServer).OrderState(ctx, in)
+		return srv.(StockServer).OrderInfo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/Stock/OrderState",
+		FullMethod: "/Stock/OrderInfo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StockServer).OrderState(ctx, req.(*OrderStateRequest))
+		return srv.(StockServer).OrderInfo(ctx, req.(*OrderInfoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -617,8 +617,8 @@ var Stock_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Stock_CancelOrder_Handler,
 		},
 		{
-			MethodName: "OrderState",
-			Handler:    _Stock_OrderState_Handler,
+			MethodName: "OrderInfo",
+			Handler:    _Stock_OrderInfo_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

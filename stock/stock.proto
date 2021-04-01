@@ -20,7 +20,7 @@ service Stock {
   rpc TradeStream(TradeStreamRequest) returns (stream TradeStreamReply) {}
   rpc OrderBookStream(OrderBookStreamRequest) returns (stream OrderBookStreamReply) {}
 
-  rpc OrderState(OrderStateRequest) returns (OrderStateReply) {}
+  rpc OrderInfo(OrderInfoRequest) returns (OrderInfoReply) {}
   rpc OrderEventStream(google.protobuf.Empty) returns (stream OrderEventStreamReply) {}
 }
 
@@ -185,10 +185,10 @@ message OrderEventStreamReply{
   Order order = 1;
 }
 
-message OrderStateRequest {
+message OrderInfoRequest {
   string id = 1;
 }
 
-message OrderStateReply {
+message OrderInfoReply {
   Order order = 1;
 }

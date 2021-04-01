@@ -1787,10 +1787,10 @@ var _ interface {
 	ErrorName() string
 } = OrderEventStreamReplyValidationError{}
 
-// Validate checks the field values on OrderStateRequest with the rules defined
+// Validate checks the field values on OrderInfoRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, an
 // error is returned.
-func (m *OrderStateRequest) Validate() error {
+func (m *OrderInfoRequest) Validate() error {
 	if m == nil {
 		return nil
 	}
@@ -1800,9 +1800,9 @@ func (m *OrderStateRequest) Validate() error {
 	return nil
 }
 
-// OrderStateRequestValidationError is the validation error returned by
-// OrderStateRequest.Validate if the designated constraints aren't met.
-type OrderStateRequestValidationError struct {
+// OrderInfoRequestValidationError is the validation error returned by
+// OrderInfoRequest.Validate if the designated constraints aren't met.
+type OrderInfoRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1810,24 +1810,22 @@ type OrderStateRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e OrderStateRequestValidationError) Field() string { return e.field }
+func (e OrderInfoRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e OrderStateRequestValidationError) Reason() string { return e.reason }
+func (e OrderInfoRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e OrderStateRequestValidationError) Cause() error { return e.cause }
+func (e OrderInfoRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e OrderStateRequestValidationError) Key() bool { return e.key }
+func (e OrderInfoRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e OrderStateRequestValidationError) ErrorName() string {
-	return "OrderStateRequestValidationError"
-}
+func (e OrderInfoRequestValidationError) ErrorName() string { return "OrderInfoRequestValidationError" }
 
 // Error satisfies the builtin error interface
-func (e OrderStateRequestValidationError) Error() string {
+func (e OrderInfoRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1839,14 +1837,14 @@ func (e OrderStateRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sOrderStateRequest.%s: %s%s",
+		"invalid %sOrderInfoRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = OrderStateRequestValidationError{}
+var _ error = OrderInfoRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -1854,19 +1852,19 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = OrderStateRequestValidationError{}
+} = OrderInfoRequestValidationError{}
 
-// Validate checks the field values on OrderStateReply with the rules defined
-// in the proto definition for this message. If any rules are violated, an
-// error is returned.
-func (m *OrderStateReply) Validate() error {
+// Validate checks the field values on OrderInfoReply with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *OrderInfoReply) Validate() error {
 	if m == nil {
 		return nil
 	}
 
 	if v, ok := interface{}(m.GetOrder()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return OrderStateReplyValidationError{
+			return OrderInfoReplyValidationError{
 				field:  "Order",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -1877,9 +1875,9 @@ func (m *OrderStateReply) Validate() error {
 	return nil
 }
 
-// OrderStateReplyValidationError is the validation error returned by
-// OrderStateReply.Validate if the designated constraints aren't met.
-type OrderStateReplyValidationError struct {
+// OrderInfoReplyValidationError is the validation error returned by
+// OrderInfoReply.Validate if the designated constraints aren't met.
+type OrderInfoReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1887,22 +1885,22 @@ type OrderStateReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e OrderStateReplyValidationError) Field() string { return e.field }
+func (e OrderInfoReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e OrderStateReplyValidationError) Reason() string { return e.reason }
+func (e OrderInfoReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e OrderStateReplyValidationError) Cause() error { return e.cause }
+func (e OrderInfoReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e OrderStateReplyValidationError) Key() bool { return e.key }
+func (e OrderInfoReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e OrderStateReplyValidationError) ErrorName() string { return "OrderStateReplyValidationError" }
+func (e OrderInfoReplyValidationError) ErrorName() string { return "OrderInfoReplyValidationError" }
 
 // Error satisfies the builtin error interface
-func (e OrderStateReplyValidationError) Error() string {
+func (e OrderInfoReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1914,14 +1912,14 @@ func (e OrderStateReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sOrderStateReply.%s: %s%s",
+		"invalid %sOrderInfoReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = OrderStateReplyValidationError{}
+var _ error = OrderInfoReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -1929,7 +1927,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = OrderStateReplyValidationError{}
+} = OrderInfoReplyValidationError{}
 
 // Validate checks the field values on AllMarketsReply_Market with the rules
 // defined in the proto definition for this message. If any rules are
