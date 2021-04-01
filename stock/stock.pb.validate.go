@@ -1858,6 +1858,150 @@ var _ interface {
 	ErrorName() string
 } = OrderEventStreamReplyValidationError{}
 
+// Validate checks the field values on OrderStateRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *OrderStateRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	return nil
+}
+
+// OrderStateRequestValidationError is the validation error returned by
+// OrderStateRequest.Validate if the designated constraints aren't met.
+type OrderStateRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e OrderStateRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e OrderStateRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e OrderStateRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e OrderStateRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e OrderStateRequestValidationError) ErrorName() string {
+	return "OrderStateRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e OrderStateRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sOrderStateRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = OrderStateRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = OrderStateRequestValidationError{}
+
+// Validate checks the field values on OrderStateReply with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *OrderStateReply) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	if v, ok := interface{}(m.GetOrder()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return OrderStateReplyValidationError{
+				field:  "Order",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	return nil
+}
+
+// OrderStateReplyValidationError is the validation error returned by
+// OrderStateReply.Validate if the designated constraints aren't met.
+type OrderStateReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e OrderStateReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e OrderStateReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e OrderStateReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e OrderStateReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e OrderStateReplyValidationError) ErrorName() string { return "OrderStateReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e OrderStateReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sOrderStateReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = OrderStateReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = OrderStateReplyValidationError{}
+
 // Validate checks the field values on AllMarketsReply_Market with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, an error is returned.
