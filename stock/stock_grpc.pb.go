@@ -33,7 +33,7 @@ type StockClient interface {
 	TradeStream(ctx context.Context, in *TradeStreamRequest, opts ...grpc.CallOption) (Stock_TradeStreamClient, error)
 	OrderBookStream(ctx context.Context, in *OrderBookStreamRequest, opts ...grpc.CallOption) (Stock_OrderBookStreamClient, error)
 	OrderState(ctx context.Context, in *OrderStateRequest, opts ...grpc.CallOption) (*OrderStateReply, error)
-	OrderEventStream(ctx context.Context, in *OrderEventStreamRequest, opts ...grpc.CallOption) (Stock_OrderEventStreamClient, error)
+	OrderEventStream(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (Stock_OrderEventStreamClient, error)
 }
 
 type stockClient struct {
@@ -221,7 +221,7 @@ func (c *stockClient) OrderState(ctx context.Context, in *OrderStateRequest, opt
 	return out, nil
 }
 
-func (c *stockClient) OrderEventStream(ctx context.Context, in *OrderEventStreamRequest, opts ...grpc.CallOption) (Stock_OrderEventStreamClient, error) {
+func (c *stockClient) OrderEventStream(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (Stock_OrderEventStreamClient, error) {
 	stream, err := c.cc.NewStream(ctx, &Stock_ServiceDesc.Streams[3], "/Stock/OrderEventStream", opts...)
 	if err != nil {
 		return nil, err
@@ -271,7 +271,7 @@ type StockServer interface {
 	TradeStream(*TradeStreamRequest, Stock_TradeStreamServer) error
 	OrderBookStream(*OrderBookStreamRequest, Stock_OrderBookStreamServer) error
 	OrderState(context.Context, *OrderStateRequest) (*OrderStateReply, error)
-	OrderEventStream(*OrderEventStreamRequest, Stock_OrderEventStreamServer) error
+	OrderEventStream(*emptypb.Empty, Stock_OrderEventStreamServer) error
 	mustEmbedUnimplementedStockServer()
 }
 
@@ -315,7 +315,7 @@ func (UnimplementedStockServer) OrderBookStream(*OrderBookStreamRequest, Stock_O
 func (UnimplementedStockServer) OrderState(context.Context, *OrderStateRequest) (*OrderStateReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OrderState not implemented")
 }
-func (UnimplementedStockServer) OrderEventStream(*OrderEventStreamRequest, Stock_OrderEventStreamServer) error {
+func (UnimplementedStockServer) OrderEventStream(*emptypb.Empty, Stock_OrderEventStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method OrderEventStream not implemented")
 }
 func (UnimplementedStockServer) mustEmbedUnimplementedStockServer() {}
@@ -557,7 +557,7 @@ func _Stock_OrderState_Handler(srv interface{}, ctx context.Context, dec func(in
 }
 
 func _Stock_OrderEventStream_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(OrderEventStreamRequest)
+	m := new(emptypb.Empty)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}

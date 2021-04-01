@@ -21,7 +21,7 @@ service Stock {
   rpc OrderBookStream(OrderBookStreamRequest) returns (stream OrderBookStreamReply) {}
 
   rpc OrderState(OrderStateRequest) returns (OrderStateReply) {}
-  rpc OrderEventStream(OrderEventStreamRequest) returns (stream OrderEventStreamReply) {}
+  rpc OrderEventStream(google.protobuf.Empty) returns (stream OrderEventStreamReply) {}
 }
 
 
@@ -179,11 +179,6 @@ message TradeStreamReply {
   double volume = 3;
   google.protobuf.Timestamp date = 4;
   string askbit = 5;
-}
-
-message OrderEventStreamRequest {
-  string uuid = 1;
-  string identifier = 2;
 }
 
 message OrderEventStreamReply{
