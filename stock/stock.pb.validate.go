@@ -407,6 +407,8 @@ func (m *TickReply) Validate() error {
 
 	// no validation rules for Volume
 
+	// no validation rules for Askbid
+
 	return nil
 }
 
