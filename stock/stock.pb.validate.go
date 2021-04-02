@@ -1651,7 +1651,7 @@ func (m *TradeStreamReply) Validate() error {
 		}
 	}
 
-	// no validation rules for Askbit
+	// no validation rules for Askbid
 
 	return nil
 }

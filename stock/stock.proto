@@ -178,7 +178,7 @@ message TradeStreamReply {
   double price = 2;
   double volume = 3;
   google.protobuf.Timestamp date = 4;
-  string askbit = 5;
+  string askbid = 5;
 }
 
 message OrderEventStreamReply{
