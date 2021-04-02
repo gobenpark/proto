@@ -61,6 +61,7 @@ message TickReply{
   double price = 1;
   google.protobuf.Timestamp date = 2;
   double volume = 3;
+  string askbid = 4;;
 }
 
 message ChartRequest {
